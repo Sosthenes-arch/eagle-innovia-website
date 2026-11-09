@@ -41,6 +41,9 @@ const programmes = defineCollection({
     format: z.array(z.string()),
     learn: z.array(z.string()),
     outcomes: z.array(z.string()),
+    modules: z
+      .array(z.object({ title: z.string(), summary: z.string(), labs: z.array(z.string()) }))
+      .default([]),
     faqs: z.array(faq).default([]),
   }),
 });

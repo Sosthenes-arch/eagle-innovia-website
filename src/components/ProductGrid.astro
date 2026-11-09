@@ -25,7 +25,15 @@ const liveStores = stores.filter((s) => isSet(s.href));
       {products.map((p) => (
         <article class="card flex flex-col overflow-hidden">
           {p.data.image && (
-            <Image src={p.data.image} alt={p.data.imageAlt ?? ''} width={600} height={450} class="aspect-[4/3] w-full object-cover" />
+            <div class="bg-off-white p-6">
+              <Image
+                src={p.data.image}
+                alt={p.data.imageAlt ?? ''}
+                width={420}
+                densities={[1, 2]}
+                class="mx-auto aspect-[3/4] w-full max-w-[280px] rounded-[8px] object-contain"
+              />
+            </div>
           )}
           <div class="flex flex-1 flex-col p-6">
             <p class="text-xs font-bold tracking-widest text-ink-muted uppercase">{p.data.kind}</p>

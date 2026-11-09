@@ -23,7 +23,7 @@ const fee = isSet(site.vaProgramme.fee) ? site.vaProgramme.fee : null;
 
 <BaseLayout
   title="Eagle Innovia Academy | Free AWS Course & VA Training"
-  description="Free AWS course for beginners and a six-week Healthcare Virtual Assistant programme for nurses moving into remote roles. Online, from Abuja."
+  description="Free AWS course for beginners and a six-week Healthcare Virtual Assistant programme for nurses moving into remote roles. Fully online."
   breadcrumbs={[{ name: 'Academy', path: '/academy' }]}
   schema={[
     courseSchema({ name: aws.title, description: aws.summary, path: '/academy', free: true }),
@@ -35,7 +35,7 @@ const fee = isSet(site.vaProgramme.fee) ? site.vaProgramme.fee : null;
     accent="lime"
     eyebrow="Eagle Innovia Academy — Education"
     title="Practical online training for remote careers"
-    lead="We teach the skills we use every day: a free AWS course for complete beginners, and a hands-on programme for nurses moving into remote healthcare roles."
+    lead="We teach the skills we use every day: a free, lab-based AWS course that takes complete beginners to job-ready, and a hands-on programme for nurses moving into remote healthcare roles."
   >
     <a href="#free-aws-course" class="btn-accent">Start learning AWS free</a>
     <a href="#va-programme" class="btn-outline-light">Healthcare VA programme</a>
@@ -55,16 +55,12 @@ const fee = isSet(site.vaProgramme.fee) ? site.vaProgramme.fee : null;
         <div class="lg:col-span-3">
           <YouTubeFacade id={c.lessons[0].id} title={`${aws.title} — ${c.lessons[0].title}`} />
           <div class="mt-6 flex flex-col gap-3 sm:flex-row">
-            <a href={c.channel} target="_blank" rel="noopener" class="btn-primary">
+            <a href={isSet(c.playlist) ? c.playlist : c.channel} target="_blank" rel="noopener" class="btn-primary">
               <SocialIcon name="youtube" /> Start the free course<span class="sr-only">(opens YouTube in a new tab)</span>
             </a>
-            {
-              isSet(c.playlist) && (
-                <a href={c.playlist} target="_blank" rel="noopener" class="btn-outline">
-                  Full playlist<span class="sr-only">(opens in a new tab)</span>
-                </a>
-              )
-            }
+            <a href={c.channel} target="_blank" rel="noopener" class="btn-outline">
+              YouTube channel<span class="sr-only">(opens in a new tab)</span>
+            </a>
             <a href={c.labRepo} target="_blank" rel="noopener" class="btn-outline">
               <SocialIcon name="github" /> Lab files on GitHub<span class="sr-only">(opens in a new tab)</span>
             </a>
@@ -72,7 +68,7 @@ const fee = isSet(site.vaProgramme.fee) ? site.vaProgramme.fee : null;
         </div>
 
         <div class="lg:col-span-2">
-          <h3 class="text-xl">Lessons</h3>
+          <h3 class="text-xl">Lessons released so far</h3>
           <ol class="mt-4 space-y-2">
             {
               c.lessons.map((l, i) => (
@@ -94,11 +90,52 @@ const fee = isSet(site.vaProgramme.fee) ? site.vaProgramme.fee : null;
               ))
             }
           </ol>
-          <h3 class="mt-8 text-xl">Every lesson includes</h3>
+          <p class="mt-4 rounded-[12px] bg-lime-light p-4 text-sm">
+            <strong>New lessons are added regularly.</strong> The course is released one lesson at a time. Subscribe
+            to the channel and check the roadmap below to see what is coming.
+          </p>
+          <h3 class="mt-8 text-xl">How every lesson works</h3>
           <div class="mt-4">
-            <CheckList items={aws.format.slice(1)} />
+            <CheckList items={aws.format} />
           </div>
         </div>
+      </div>
+
+      <blockquote class="mt-12 border-l-4 border-lime pl-5 font-heading text-xl font-semibold sm:text-2xl">
+        “No one learns how to swim by reading about water.”
+        <span class="mt-2 block font-sans text-base font-normal text-ink-muted">
+          Follow along in your own AWS console and CLI. Students often share their screen and build each piece
+          while their mentor guides them.
+        </span>
+      </blockquote>
+
+      <div id="course-roadmap" class="mt-14 scroll-mt-24">
+        <h3 class="text-2xl sm:text-3xl">Course roadmap</h3>
+        <p class="lead mt-3">Eleven modules, from cloud foundations to a capstone project and career readiness.</p>
+        <ol class="mt-8 grid gap-4 md:grid-cols-2">
+          {
+            aws.modules.map((m, i) => (
+              <li class="card flex gap-4 p-5">
+                <span class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-teal font-bold text-white">
+                  {i + 1}
+                </span>
+                <div>
+                  <h4 class="font-heading text-lg font-semibold">
+                    <span class="sr-only">Module {i + 1}: </span>
+                    {m.title}
+                  </h4>
+                  <p class="mt-1 text-ink-muted">{m.summary}</p>
+                  <p class="mt-3 text-sm font-bold tracking-widest text-ink-muted uppercase">Labs</p>
+                  <ul class="mt-1 flex flex-wrap gap-2">
+                    {m.labs.map((l) => (
+                      <li class="rounded-full bg-off-white px-3 py-1 text-sm">{l}</li>
+                    ))}
+                  </ul>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
       </div>
 
       <div class="mt-12 grid gap-6 md:grid-cols-2">

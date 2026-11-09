@@ -3,8 +3,8 @@ title: CRM & automation
 navTitle: CRM & automation
 order: 4
 icon: workflow
-metaTitle: Zoho CRM Setup & Workflow Automation | Light Cloud Abuja
-metaDescription: Zoho CRM and Zoho Flow setup, workflow automation and WhatsApp and AI integrations for growing teams. Delivered remotely from Abuja, Nigeria.
+metaTitle: Zoho CRM Setup & Workflow Automation | Light Cloud
+metaDescription: Zoho CRM and Zoho Flow setup, workflow automation and WhatsApp and AI integrations for growing teams. Delivered remotely, worldwide.
 h1: Zoho CRM setup and workflow automation, delivered remotely
 summary: Zoho CRM and Zoho Flow setup, workflow automation, WhatsApp and AI integrations.
 intro: We set up Zoho CRM around how your team really sells and serves customers, then automate the repetitive steps. Leads land in one place, follow-ups happen on time and your team spends less time on admin.

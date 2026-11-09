@@ -4,7 +4,7 @@ navTitle: Cloud security
 order: 3
 icon: shield
 metaTitle: Cloud Security Assessments & IAM Hardening | Light Cloud
-metaDescription: AWS security assessments, IAM hardening and practical fixes for startups, SMEs and health-tech firms. Delivered remotely from Abuja, Nigeria.
+metaDescription: AWS security assessments, IAM hardening and practical fixes for startups, SMEs and health-tech firms. Delivered remotely, worldwide.
 h1: Cloud security assessments and IAM hardening, delivered remotely
 summary: Security assessments, IAM hardening and practical fixes for your AWS accounts.
 intro: Most cloud breaches start with simple mistakes, such as overly broad permissions, public storage or missing MFA. We find these gaps, explain the risk in plain English and fix them with you.

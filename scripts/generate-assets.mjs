@@ -47,8 +47,8 @@ const og = Buffer.from(`
   <rect x="0" y="610" width="1200" height="20" fill="#A8D400"/>
   <text x="520" y="250" font-family="Georgia, 'Times New Roman', serif" font-size="64" font-weight="700" fill="#FFFFFF" letter-spacing="2">EAGLE INNOVIA</text>
   <text x="520" y="310" font-family="Arial, Helvetica, sans-serif" font-size="28" fill="#A8D400" letter-spacing="4">HEALTH • TECHNOLOGY • EDUCATION</text>
-  <text x="520" y="390" font-family="Arial, Helvetica, sans-serif" font-size="30" fill="#E6EFEC">Cloud, healthcare and education solutions</text>
-  <text x="520" y="432" font-family="Arial, Helvetica, sans-serif" font-size="30" fill="#E6EFEC">— built in Abuja, delivered worldwide.</text>
+  <text x="520" y="390" font-family="Arial, Helvetica, sans-serif" font-size="30" fill="#E6EFEC">Cloud, healthcare and education solutions,</text>
+  <text x="520" y="432" font-family="Arial, Helvetica, sans-serif" font-size="30" fill="#E6EFEC">delivered worldwide.</text>
 </svg>`);
 const badgeOg = await sharp(badge).resize(380, 380).toBuffer();
 await sharp(og)

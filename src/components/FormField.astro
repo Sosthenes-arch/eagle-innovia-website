@@ -17,6 +17,8 @@ interface Props {
   options?: string[];
   /** Span both columns on desktop. */
   full?: boolean;
+  /** Zoho's custom field-type marker, e.g. ftype="email" (Zoho's email check looks for it). */
+  ftype?: string;
 }
 const {
   id,
@@ -31,6 +33,7 @@ const {
   rows = 5,
   options,
   full = false,
+  ftype,
 } = Astro.props;
 
 const errorId = `${id}-error`;
@@ -63,6 +66,7 @@ const control =
     ) : (
       <input
         type={type}
+        ftype={ftype}
         id={id}
         name={name}
         maxlength={maxlength}

@@ -3,8 +3,8 @@ title: DevOps & Kubernetes
 navTitle: DevOps & Kubernetes
 order: 2
 icon: container
-metaTitle: DevOps, CI/CD & Kubernetes Services | Light Cloud Abuja
-metaDescription: CI/CD pipelines, Docker, Kubernetes and Infrastructure as Code with Terraform and CloudFormation. Delivered remotely from Abuja by certified engineers.
+metaTitle: DevOps, CI/CD & Kubernetes Services | Light Cloud
+metaDescription: CI/CD pipelines, Docker, Kubernetes and Infrastructure as Code with Terraform and CloudFormation. Delivered remotely by certified engineers.
 h1: DevOps, CI/CD and Kubernetes, delivered remotely
 summary: CI/CD pipelines, Docker, Kubernetes and Infrastructure as Code with Terraform and CloudFormation.
 intro: We help your team ship faster and with fewer surprises. We automate builds, tests and deployments, package your apps in containers and describe your infrastructure as code, so every change is repeatable and reviewable.

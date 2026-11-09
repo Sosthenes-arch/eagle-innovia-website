@@ -16,10 +16,10 @@ export const site = {
   name: 'Eagle Innovia Ltd',
   shortName: 'Eagle Innovia',
   url: 'https://www.eagleinnovia.com',
-  tagline: 'Cloud, healthcare and education solutions — built in Abuja, delivered worldwide.',
+  tagline: 'Cloud, healthcare and education solutions, delivered worldwide.',
   focus: ['Health', 'Technology', 'Education', 'Innovation'],
   description:
-    'Eagle Innovia Ltd is a Nigerian company in Kuje, Abuja, delivering cloud, healthcare and education solutions to clients in the UK, USA, Canada, the EU and Nigeria.',
+    'Eagle Innovia Ltd delivers cloud, healthcare and education solutions to clients in the UK, USA, Canada, Switzerland, the EU and Nigeria.',
   markets: ['UK', 'USA', 'Canada', 'Switzerland', 'EU', 'Nigeria'],
 
   location: {
@@ -50,14 +50,14 @@ export const site = {
   phone: TODO as string,
 
   /** Corporate Affairs Commission registration number, e.g. 'RC 1234567'. Hidden while TODO. */
-  cacNumber: TODO as string,
+  cacNumber: '8852938',
 
   social: {
     linkedin: TODO as string,
     x: TODO as string,
     facebook: TODO as string,
     instagram: TODO as string,
-    youtube: 'https://www.youtube.com/@lightcloud9',
+    youtube: TODO as string, // Eagle Innovia's own channel, if any (the AWS course channel is personal)
   },
 
   /**
@@ -78,11 +78,12 @@ export const site = {
     'HIPAA certification',
   ],
 
-  /** Free AWS course on the Light Cloud YouTube channel. */
+  /** Free AWS course on the "Cloud Engineering and AI with Ugochukwu" YouTube channel. */
   awsCourse: {
     title: 'Cloud Computing with AWS: Zero to Job-Ready',
+    channelName: 'Cloud Engineering and AI with Ugochukwu',
     channel: 'https://www.youtube.com/@lightcloud9',
-    playlist: TODO as string, // TODO: full YouTube playlist URL
+    playlist: 'https://www.youtube.com/playlist?list=PLV6bFfc-yYjE',
     labRepo: 'https://github.com/lightcloud99/AWS-Cloud-Engineering-for-Beginners',
     lessons: [
       { title: 'Lesson 1', id: 'RRIqStltAxk' },
@@ -102,7 +103,7 @@ export const site = {
   afroremote: {
     url: 'https://afroremote.com',
     /** Path inside src/assets, e.g. 'afroremote-home.png'. Hidden while TODO. */
-    screenshot: TODO as string,
+    screenshot: 'afroremote-home.png',
     /** Real, verified results only, e.g. ['1,200 jobs listed in the first month']. */
     results: [] as string[],
   },

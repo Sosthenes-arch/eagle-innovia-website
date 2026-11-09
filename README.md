@@ -111,17 +111,11 @@ unaffected.
 
 ---
 
-## Zoho form — action needed in Zoho CRM
+## Zoho form
 
-The current Zoho Web-to-Lead form has **no Email field**, so enquiries cannot be replied to by email.
-
-1. Zoho CRM → **Setup → Developer Hub → Webforms** → edit form `WebToLeads7678017000000632312`.
-2. Add the **Email** field (mark it mandatory) and optionally a **Service of interest** picklist.
-3. Set **Landing Page URL** to `https://www.eagleinnovia.com/thank-you`.
-4. Re-export the embed code and update `src/components/ZohoContactForm.astro` following the
-   instructions at the top of that file (an Email field is
-   `<FormField id="Email" name="Email" label="Email" type="email" autocomplete="email" required />`,
-   and add `'Email'` to `mndFileds` in the script).
+The form (`src/components/ZohoContactForm.astro`) includes the Email field and returns visitors to
+`https://www.eagleinnovia.com/thank-you`. If you change the webform in Zoho CRM → Setup → Developer Hub →
+Webforms, re-export the code and follow the instructions at the top of that file.
 
 ## Analytics
 

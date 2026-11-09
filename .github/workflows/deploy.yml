@@ -23,9 +23,9 @@ jobs:
       # (Settings → Secrets and variables → Actions → Variables).
       BASE_PATH: ${{ vars.BASE_PATH || format('/{0}/', github.event.repository.name) }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: 24
           cache: pnpm
@@ -33,7 +33,7 @@ jobs:
       - run: pnpm build
       - run: pnpm check:emails
       - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v4
         with:
           path: dist
 

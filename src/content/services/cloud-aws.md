@@ -3,9 +3,9 @@ title: Cloud & AWS
 navTitle: Cloud & AWS
 order: 1
 icon: cloud
-metaTitle: AWS Cloud Engineering & Migration | Light Cloud, Abuja
-metaDescription: AWS architecture, cloud migration and cost optimisation from certified engineers in Abuja. Remote delivery to the UK, USA, Canada, the EU and Nigeria.
-h1: AWS cloud engineering and migration from Abuja
+metaTitle: AWS Cloud Engineering & Migration | Light Cloud
+metaDescription: AWS architecture, cloud migration and cost optimisation from certified engineers. Delivered remotely to the UK, USA, Canada, the EU and Nigeria.
+h1: AWS cloud engineering and migration, delivered remotely
 summary: Solutions architecture, migration and cost optimisation on AWS, designed by certified engineers.
 intro: We design, build and run AWS environments that are secure, well documented and sized for what you actually use. Whether you are moving off a single server or tidying up an account that grew without a plan, we get you to a setup your team understands.
 whatWeDo:

@@ -7,7 +7,8 @@ import ServiceCard from '@/components/ServiceCard.astro';
 import CheckList from '@/components/CheckList.astro';
 import CTABand from '@/components/CTABand.astro';
 import Icon from '@/components/Icon.astro';
-import { site, isSet } from '@/config/site';
+import { site } from '@/config/site';
+import { caseStudyImage } from '@/lib/caseStudyImage';
 
 export async function getStaticPaths() {
   const cases = await getCollection('case-studies');
@@ -17,11 +18,8 @@ const { entry } = Astro.props as { entry: CollectionEntry<'case-studies'> };
 const c = entry.data;
 
 // AfroRemote screenshot and results come from site.ts (hidden while TODO / empty).
-const isAfro = entry.id === 'afroremote';
-const results = isAfro ? site.afroremote.results : [];
-const shots = import.meta.glob<{ default: ImageMetadata }>('/src/assets/**/*.{png,jpg,jpeg,webp,avif}');
-const shotPath = isAfro && isSet(site.afroremote.screenshot) ? `/src/assets/${site.afroremote.screenshot}` : null;
-const screenshot = shotPath && shots[shotPath] ? (await shots[shotPath]()).default : null;
+const results = entry.id === 'afroremote' ? site.afroremote.results : [];
+const screenshot = await caseStudyImage(entry.id);
 ---
 
 <BaseLayout

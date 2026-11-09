@@ -1,20 +1,21 @@
 ---
 /**
  * Zoho CRM Web-to-Lead form, restyled to the Eagle Innovia brand.
+ * Based on the Zoho export that includes the Email field and the /thank-you return URL.
  *
  * DO NOT CHANGE (the form breaks otherwise):
  *  - <form> id, name, action, method, accept-charset and the onSubmit hook
  *  - every hidden input name/value (xnQsjsdp, zc_gad, xmIwtLD, actionType, returnURL, aG9uZXlwb3Q)
- *  - field `name` attributes ('First Name', 'Last Name', 'Phone', 'Company', 'Description' …)
- *  - the function name checkMandatory7678017000000632312 (incl. smart-URL block + submit disable)
+ *  - field `name` attributes ('First Name', 'Last Name', 'Email', 'Phone', 'Company', 'Description')
+ *  - the function names checkMandatory7678017000000632312 and validateEmail7678017000000632312
+ *    (incl. the smart-URL block and the line that disables the submit button)
  *
- * WHEN YOU RE-EXPORT THE FORM FROM ZOHO (e.g. after adding an Email field):
- *  1. Copy the new hidden input values (xnQsjsdp, xmIwtLD …) and the form id/name if they changed.
- *  2. Add each new field with <FormField>, keeping Zoho's `name` exactly, e.g.
- *       <FormField id="Email" name="Email" label="Email" type="email" autocomplete="email" required />
- *     For a picklist use `options={['-None-', 'Cloud & AWS', …]}`.
+ * WHEN YOU RE-EXPORT THE FORM FROM ZOHO:
+ *  1. Copy the new hidden input values (xnQsjsdp, xmIwtLD, returnURL …) and the form id/name if they changed.
+ *  2. Add each new field with <FormField>, keeping Zoho's `name` exactly. For a picklist use
+ *     `options={['-None-', 'Cloud & AWS', …]}`.
  *  3. Add any new mandatory field to mndFileds / fldLangVal in the script below.
- *  4. If the form id changes, update the number in the function name, onSubmit and document.forms[…].
+ *  4. If the form id changes, update the number in the function names, onSubmit and document.forms[…].
  */
 import FormField from './FormField.astro';
 import { url } from '@/lib/url';
@@ -42,24 +43,34 @@ import { url } from '@/lib/url';
       type="text"
       hidden
       name="xnQsjsdp"
-      value="7cb5055a032de0e2ab50b75220a373c25f99f76762afb6090573707fc94909b4"
+      value="6ac6ecb77085b93c0ee6df1825eb78f9e6d80c504a57627dd0d4f3c31ab90861"
     />
     <input type="hidden" name="zc_gad" id="zc_gad" value="" />
     <input
       type="text"
       hidden
       name="xmIwtLD"
-      value="fbba770c44290fe183d4807d5a4683b7c05d8cf3e1f53e2bf12984107e0b4eb6a8a48e28ae28bb6fd733fb2b7d45ea12"
+      value="e7e972c411c50e93ddac3a6492f343626f0d6791ce087ec63f6b5c99d6589967d47489135baab240f41426268a601565"
     />
     <input type="text" hidden name="actionType" value="TGVhZHM=" />
-    <input type="text" hidden name="returnURL" value="null" />
+    <input type="text" hidden name="returnURL" value="https://www.eagleinnovia.com/thank-you" />
 
     <div class="grid gap-5 sm:grid-cols-2">
       <FormField id="First_Name" name="First Name" label="First name" maxlength={40} autocomplete="given-name" required />
       <FormField id="Last_Name" name="Last Name" label="Last name" maxlength={80} autocomplete="family-name" required />
+      <FormField
+        id="Email"
+        name="Email"
+        label="Email"
+        type="email"
+        ftype="email"
+        maxlength={100}
+        autocomplete="email"
+        required
+      />
       <FormField id="Phone" name="Phone" label="Phone" type="tel" maxlength={30} autocomplete="tel" />
-      <FormField id="Company" name="Company" label="Company" maxlength={200} autocomplete="organization" />
-      <!-- New Zoho fields (e.g. Email, Service of interest) go here, keeping Zoho's name attribute. -->
+      <FormField id="Company" name="Company" label="Company" maxlength={200} autocomplete="organization" full />
+      <!-- New Zoho fields (e.g. Service of interest) go here, keeping Zoho's name attribute. -->
       <FormField
         id="Description"
         name="Description"
@@ -105,9 +116,31 @@ import { url } from '@/lib/url';
         }
       }
 
+      // Zoho's email check, with inline errors instead of alert(). Returns the first invalid field or null.
+      function validateEmail7678017000000632312() {
+        var form = document.forms['WebToLeads7678017000000632312'];
+        var emailFld = form.querySelectorAll('[ftype=email]');
+        var firstBad = null;
+        var i;
+        for (i = 0; i < emailFld.length; i++) {
+          var emailVal = emailFld[i].value;
+          if (emailVal.replace(/^\s+|\s+$/g, '').length != 0) {
+            var atpos = emailVal.indexOf('@');
+            var dotpos = emailVal.lastIndexOf('.');
+            if (atpos < 1 || dotpos < atpos + 2 || dotpos + 2 >= emailVal.length) {
+              zcwfSetError7678017000000632312(emailFld[i], 'Please enter a valid email address.');
+              if (!firstBad) {
+                firstBad = emailFld[i];
+              }
+            }
+          }
+        }
+        return firstBad;
+      }
+
       function checkMandatory7678017000000632312(isAjax) {
-        var mndFileds = new Array('First Name', 'Last Name');
-        var fldLangVal = new Array('First name', 'Last name');
+        var mndFileds = new Array('First Name', 'Last Name', 'Email');
+        var fldLangVal = new Array('First name', 'Last name', 'Email address');
         var form = document.forms['WebToLeads7678017000000632312'];
         var firstInvalid = null;
         for (i = 0; i < mndFileds.length; i++) {
@@ -140,14 +173,9 @@ import { url } from '@/lib/url';
             } catch (e) {}
           }
         }
-        // Format check for an Email field, once one is added in Zoho.
-        var emailObj = form['Email'];
-        if (emailObj && emailObj.value.replace(/^\s+|\s+$/g, '').length > 0) {
-          var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailObj.value.trim());
-          zcwfSetError7678017000000632312(emailObj, emailOk ? '' : 'Please enter a valid email address.');
-          if (!emailOk && !firstInvalid) {
-            firstInvalid = emailObj;
-          }
+        var badEmail = validateEmail7678017000000632312();
+        if (!firstInvalid && badEmail) {
+          firstInvalid = badEmail;
         }
         if (firstInvalid) {
           firstInvalid.focus();

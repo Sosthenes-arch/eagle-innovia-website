@@ -1,5 +1,7 @@
 ---
+import { Image } from 'astro:assets';
 import { url } from '@/lib/url';
+import { caseStudyImage } from '@/lib/caseStudyImage';
 import Icon from './Icon.astro';
 
 interface Props {
@@ -13,13 +15,27 @@ interface Props {
 }
 const { slug, client, sector, summary, siteUrl, features = [], heading = 'h3' } = Astro.props;
 const H = heading;
+const shot = await caseStudyImage(slug);
 ---
 
 <article class="card overflow-hidden lg:grid lg:grid-cols-5">
-  <div class="on-dark hero-dark flex flex-col justify-center p-8 text-white lg:col-span-2">
-    <p class="text-sm font-bold tracking-[0.16em] text-lime uppercase">Case study</p>
-    <p class="mt-3 font-heading text-3xl font-bold text-white">{client}</p>
-    <p class="mt-2 text-white/80">{sector}</p>
+  <div class="on-dark hero-dark flex flex-col justify-center gap-5 p-6 text-white sm:p-8 lg:col-span-2">
+    <div>
+      <p class="text-sm font-bold tracking-[0.16em] text-lime uppercase">Case study</p>
+      <p class="mt-2 font-heading text-3xl font-bold text-white">{client}</p>
+      <p class="mt-1 text-white/80">{sector}</p>
+    </div>
+    {
+      shot && (
+        <Image
+          src={shot}
+          alt={`${client} home page`}
+          width={560}
+          densities={[1, 2]}
+          class="w-full rounded-[8px] border border-white/15 shadow-[var(--shadow-lift)]"
+        />
+      )
+    }
   </div>
   <div class="p-8 lg:col-span-3">
     <H class="text-2xl">Built by Eagle Innovia: {client}</H>
@@ -27,7 +43,7 @@ const H = heading;
     {
       features.length > 0 && (
         <ul class="mt-5 space-y-2">
-          {features.map((f) => (
+          {features.slice(0, 4).map((f) => (
             <li class="flex gap-2">
               <Icon name="check" size={20} class="mt-1 shrink-0 text-teal" />
               <span>{f}</span>

@@ -3,9 +3,9 @@ title: Web platforms
 navTitle: Web platforms
 order: 5
 icon: code
-metaTitle: Web Platforms & Websites | Light Cloud, Abuja Nigeria
-metaDescription: Fast, accessible websites and web platforms built in Abuja and hosted on the cloud. From company sites to job platforms like AfroRemote.
-h1: Websites and web platforms built in Abuja
+metaTitle: Websites & Web Platforms | Light Cloud
+metaDescription: Fast, accessible websites and web platforms, hosted on the cloud. From company sites to job platforms like AfroRemote.
+h1: Websites and web platforms for remote-first teams
 summary: Fast, accessible websites and web applications, hosted on the cloud.
 intro: We build websites and web platforms that load fast, work on every phone and are easy to update. We built AfroRemote, a remote-jobs platform for African candidates, and we bring the same care to every project.
 whatWeDo:
