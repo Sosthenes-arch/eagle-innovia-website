@@ -33,7 +33,7 @@ modules:
       - Switch roles securely
       - Practise least-privilege permissions
   - title: Compute and high availability
-    summary: Server virtualisation, scaling up versus scaling out, high availability and fault tolerance.
+    summary: Server virtualisation, troubleshooting EC2 connection problems with AWS Connect Assist AI, scaling up versus scaling out, high availability and fault tolerance.
     labs:
       - Launch and connect to EC2 instances
       - Build a website with user data
