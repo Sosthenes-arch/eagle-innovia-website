@@ -18,10 +18,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      # Preview on https://<user>.github.io/eagle-innovia-website/ needs the repo name as base.
-      # Once the custom domain is live, set the repository variable BASE_PATH to "/"
-      # (Settings → Secrets and variables → Actions → Variables).
-      BASE_PATH: ${{ vars.BASE_PATH || format('/{0}/', github.event.repository.name) }}
+      # Site is served from the custom domain root (www.eagleinnovia.com).
+      BASE_PATH: ${{ vars.BASE_PATH || '/' }}
     steps:
       - uses: actions/checkout@v5
       - uses: pnpm/action-setup@v4
