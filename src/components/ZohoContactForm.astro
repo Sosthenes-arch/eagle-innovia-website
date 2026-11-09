@@ -1,0 +1,194 @@
+---
+/**
+ * Zoho CRM Web-to-Lead form, restyled to the Eagle Innovia brand.
+ *
+ * DO NOT CHANGE (the form breaks otherwise):
+ *  - <form> id, name, action, method, accept-charset and the onSubmit hook
+ *  - every hidden input name/value (xnQsjsdp, zc_gad, xmIwtLD, actionType, returnURL, aG9uZXlwb3Q)
+ *  - field `name` attributes ('First Name', 'Last Name', 'Phone', 'Company', 'Description' …)
+ *  - the function name checkMandatory7678017000000632312 (incl. smart-URL block + submit disable)
+ *
+ * WHEN YOU RE-EXPORT THE FORM FROM ZOHO (e.g. after adding an Email field):
+ *  1. Copy the new hidden input values (xnQsjsdp, xmIwtLD …) and the form id/name if they changed.
+ *  2. Add each new field with <FormField>, keeping Zoho's `name` exactly, e.g.
+ *       <FormField id="Email" name="Email" label="Email" type="email" autocomplete="email" required />
+ *     For a picklist use `options={['-None-', 'Cloud & AWS', …]}`.
+ *  3. Add any new mandatory field to mndFileds / fldLangVal in the script below.
+ *  4. If the form id changes, update the number in the function name, onSubmit and document.forms[…].
+ */
+import FormField from './FormField.astro';
+import { url } from '@/lib/url';
+---
+
+<div id="crmWebToEntityForm" class="crmWebToEntityForm card p-6 sm:p-8">
+  <h2 class="text-2xl">Send us a message</h2>
+  <p class="mt-2 text-ink-muted">
+    Tell us a little about what you need. Fields marked <span class="font-bold text-teal">*</span> are
+    required.
+  </p>
+
+  <form
+    id="webform7678017000000632312"
+    action="https://crm.zoho.com/crm/WebToLeadForm"
+    name="WebToLeads7678017000000632312"
+    method="POST"
+    onSubmit='javascript:document.charset="UTF-8"; return checkMandatory7678017000000632312()'
+    accept-charset="UTF-8"
+    class="mt-6"
+    novalidate
+  >
+    <!-- Zoho-generated hidden fields. Do not remove or rename. -->
+    <input
+      type="text"
+      hidden
+      name="xnQsjsdp"
+      value="7cb5055a032de0e2ab50b75220a373c25f99f76762afb6090573707fc94909b4"
+    />
+    <input type="hidden" name="zc_gad" id="zc_gad" value="" />
+    <input
+      type="text"
+      hidden
+      name="xmIwtLD"
+      value="fbba770c44290fe183d4807d5a4683b7c05d8cf3e1f53e2bf12984107e0b4eb6a8a48e28ae28bb6fd733fb2b7d45ea12"
+    />
+    <input type="text" hidden name="actionType" value="TGVhZHM=" />
+    <input type="text" hidden name="returnURL" value="null" />
+
+    <div class="grid gap-5 sm:grid-cols-2">
+      <FormField id="First_Name" name="First Name" label="First name" maxlength={40} autocomplete="given-name" required />
+      <FormField id="Last_Name" name="Last Name" label="Last name" maxlength={80} autocomplete="family-name" required />
+      <FormField id="Phone" name="Phone" label="Phone" type="tel" maxlength={30} autocomplete="tel" />
+      <FormField id="Company" name="Company" label="Company" maxlength={200} autocomplete="organization" />
+      <!-- New Zoho fields (e.g. Email, Service of interest) go here, keeping Zoho's name attribute. -->
+      <FormField
+        id="Description"
+        name="Description"
+        label="How can we help?"
+        textarea
+        rows={5}
+        full
+        placeholder="For example: we want to move our app to AWS and cut our monthly bill, or we need a medical virtual assistant for our UK practice."
+      />
+    </div>
+
+    <!-- Zoho honeypot. Do not remove. -->
+    <input type="text" hidden name="aG9uZXlwb3Q" value="" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+    <div class="mt-6">
+      <input
+        type="submit"
+        id="formsubmit"
+        class="formsubmit btn-primary w-full cursor-pointer disabled:cursor-wait disabled:opacity-80 sm:w-auto"
+        value="Send message"
+        title="Send message"
+      />
+      <p class="mt-4 text-sm text-ink-muted">
+        We use your details only to reply to your enquiry. Read our <a href={url('/privacy')}>privacy notice</a>.
+      </p>
+    </div>
+
+    <script is:inline>
+      function zcwfSetError7678017000000632312(fieldObj, msg) {
+        var err = document.getElementById(fieldObj.id + '-error');
+        if (msg) {
+          fieldObj.setAttribute('aria-invalid', 'true');
+          if (err) {
+            err.textContent = msg;
+            err.hidden = false;
+          }
+        } else {
+          fieldObj.removeAttribute('aria-invalid');
+          if (err) {
+            err.textContent = '';
+            err.hidden = true;
+          }
+        }
+      }
+
+      function checkMandatory7678017000000632312(isAjax) {
+        var mndFileds = new Array('First Name', 'Last Name');
+        var fldLangVal = new Array('First name', 'Last name');
+        var form = document.forms['WebToLeads7678017000000632312'];
+        var firstInvalid = null;
+        for (i = 0; i < mndFileds.length; i++) {
+          var fieldObj = form[mndFileds[i]];
+          if (fieldObj) {
+            var msg = '';
+            if (fieldObj.value.replace(/^\s+|\s+$/g, '').length == 0) {
+              if (fieldObj.type == 'file') {
+                msg = 'Please select a file to upload.';
+              } else {
+                msg = 'Please enter your ' + fldLangVal[i].toLowerCase() + '.';
+              }
+            } else if (fieldObj.nodeName == 'SELECT') {
+              if (fieldObj.options[fieldObj.selectedIndex].value == '-None-') {
+                msg = 'Please choose ' + fldLangVal[i].toLowerCase() + '.';
+              }
+            } else if (fieldObj.type == 'checkbox') {
+              if (fieldObj.checked == false) {
+                msg = 'Please accept ' + fldLangVal[i] + '.';
+              }
+            }
+            zcwfSetError7678017000000632312(fieldObj, msg);
+            if (msg && !firstInvalid) {
+              firstInvalid = fieldObj;
+            }
+            try {
+              if (fieldObj.name == 'Last Name') {
+                name = fieldObj.value;
+              }
+            } catch (e) {}
+          }
+        }
+        // Format check for an Email field, once one is added in Zoho.
+        var emailObj = form['Email'];
+        if (emailObj && emailObj.value.replace(/^\s+|\s+$/g, '').length > 0) {
+          var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailObj.value.trim());
+          zcwfSetError7678017000000632312(emailObj, emailOk ? '' : 'Please enter a valid email address.');
+          if (!emailOk && !firstInvalid) {
+            firstInvalid = emailObj;
+          }
+        }
+        if (firstInvalid) {
+          firstInvalid.focus();
+          return false;
+        }
+        var urlparams = new URLSearchParams(window.location.search);
+        if (urlparams.has('service') && urlparams.get('service') === 'smarturl') {
+          var webform = document.getElementById('webform7678017000000632312');
+          var service = urlparams.get('service');
+          var smarturlfield = document.createElement('input');
+          smarturlfield.setAttribute('type', 'hidden');
+          smarturlfield.setAttribute('value', service);
+          smarturlfield.setAttribute('name', 'service');
+          webform.appendChild(smarturlfield);
+        }
+        var submitBtn = document.querySelector('.crmWebToEntityForm .formsubmit');
+        submitBtn.value = 'Sending…';
+        submitBtn.setAttribute('aria-busy', 'true');
+        document.querySelector('.crmWebToEntityForm .formsubmit').setAttribute('disabled', true);
+      }
+
+      // Clear a field's error as soon as the visitor fixes it.
+      (function () {
+        var form = document.forms['WebToLeads7678017000000632312'];
+        if (!form) return;
+        form.addEventListener('input', function (e) {
+          var el = e.target;
+          if (el.getAttribute && el.getAttribute('aria-invalid') === 'true' && el.value.trim().length > 0) {
+            zcwfSetError7678017000000632312(el, '');
+          }
+        });
+        // Re-enable the button if the visitor comes back with the browser's Back button.
+        window.addEventListener('pageshow', function () {
+          var btn = document.querySelector('.crmWebToEntityForm .formsubmit');
+          if (btn) {
+            btn.removeAttribute('disabled');
+            btn.removeAttribute('aria-busy');
+            btn.value = 'Send message';
+          }
+        });
+      })();
+    </script>
+  </form>
+</div>

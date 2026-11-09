@@ -1,0 +1,24 @@
+---
+import { site } from '@/config/site';
+import Icon from './Icon.astro';
+---
+
+<section class="border-y border-line bg-off-white" aria-labelledby="certs-heading">
+  <div class="container-site py-10">
+    <h2 id="certs-heading" class="text-center font-sans text-sm font-bold tracking-[0.16em] text-ink-muted uppercase">
+      Our team is certified in
+    </h2>
+    <ul class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        site.certifications.map((c) => (
+          <li class="flex items-center gap-3 rounded-[12px] bg-white px-4 py-3 shadow-[var(--shadow-soft)]">
+            <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-lime text-midnight">
+              <Icon name="badge-check" size={20} />
+            </span>
+            <span class="text-sm font-bold leading-snug">{c}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

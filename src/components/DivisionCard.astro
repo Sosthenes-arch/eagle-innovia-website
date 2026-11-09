@@ -1,0 +1,37 @@
+---
+import { url } from '@/lib/url';
+import Icon from './Icon.astro';
+
+interface Props {
+  name: string;
+  area: string;
+  href: string;
+  icon: string;
+  text: string;
+  accent: 'teal' | 'sage' | 'lime' | 'sage-light';
+}
+const { name, area, href, icon, text, accent } = Astro.props;
+const bar = { teal: 'bg-teal', sage: 'bg-sage', lime: 'bg-lime', 'sage-light': 'bg-sage-light' }[accent];
+const iconBg = {
+  teal: 'bg-teal-light text-teal',
+  sage: 'bg-sage-light text-sage-dark',
+  lime: 'bg-lime-light text-teal',
+  'sage-light': 'bg-sage-light text-sage-dark',
+}[accent];
+---
+
+<a
+  href={url(href)}
+  class="card group relative flex h-full flex-col overflow-hidden p-6 no-underline transition-shadow hover:shadow-[var(--shadow-lift)]"
+>
+  <span class:list={['absolute inset-x-0 top-0 h-1.5', bar]} aria-hidden="true"></span>
+  <span class:list={['mb-5 inline-flex h-12 w-12 items-center justify-center rounded-[12px]', iconBg]}>
+    <Icon name={icon} />
+  </span>
+  <span class="text-xs font-bold tracking-widest text-ink-muted uppercase">{area}</span>
+  <h3 class="mt-1 text-xl">{name}</h3>
+  <p class="mt-3 flex-1 text-base text-ink-muted">{text}</p>
+  <span class="mt-5 inline-flex items-center gap-1 font-bold text-teal group-hover:gap-2 transition-all">
+    Explore <Icon name="arrow-right" size={18} />
+  </span>
+</a>

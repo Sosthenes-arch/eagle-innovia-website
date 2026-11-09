@@ -1,0 +1,55 @@
+---
+/**
+ * Inline Calendly scheduler. Calendly's script and iframe only load when this block
+ * scrolls near the viewport (or the visitor clicks "Load calendar"), keeping the page fast.
+ */
+import { site } from '@/config/site';
+---
+
+<div class="card overflow-hidden" data-calendly-inline data-url={site.calendly}>
+  <div class="flex min-h-[260px] flex-col items-center justify-center gap-4 p-8 text-center" data-calendly-placeholder>
+    <p class="font-bold">Pick a time that suits you</p>
+    <p class="text-sm text-ink-muted">The booking calendar is provided by Calendly.</p>
+    <button type="button" class="btn-outline" data-calendly-load>Load calendar</button>
+  </div>
+  <div data-calendly-target class="hidden" style="min-width:300px;height:700px;"></div>
+</div>
+
+<script>
+  declare global {
+    interface Window {
+      Calendly?: { initInlineWidget: (o: { url: string; parentElement: HTMLElement }) => void };
+    }
+  }
+  const box = document.querySelector<HTMLElement>('[data-calendly-inline]');
+  if (box) {
+    let loaded = false;
+    const load = () => {
+      if (loaded) return;
+      loaded = true;
+      const target = box.querySelector<HTMLElement>('[data-calendly-target]')!;
+      const s = document.createElement('script');
+      s.src = 'https://assets.calendly.com/assets/external/widget.js';
+      s.async = true;
+      s.onload = () => {
+        box.querySelector('[data-calendly-placeholder]')?.remove();
+        target.classList.remove('hidden');
+        window.Calendly?.initInlineWidget({ url: box.dataset.url!, parentElement: target });
+      };
+      document.head.appendChild(s);
+    };
+    box.querySelector('[data-calendly-load]')?.addEventListener('click', load);
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((e) => e.isIntersecting)) {
+            io.disconnect();
+            load();
+          }
+        },
+        { rootMargin: '200px' },
+      );
+      io.observe(box);
+    }
+  }
+</script>

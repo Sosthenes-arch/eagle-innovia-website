@@ -1,0 +1,94 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Hero from '@/components/Hero.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import DivisionCard from '@/components/DivisionCard.astro';
+import CertStrip from '@/components/CertStrip.astro';
+import CaseStudyCard from '@/components/CaseStudyCard.astro';
+import CourseCard from '@/components/CourseCard.astro';
+import ProcessSteps from '@/components/ProcessSteps.astro';
+import Testimonials from '@/components/Testimonials.astro';
+import CTABand from '@/components/CTABand.astro';
+import CalendlyButton from '@/components/CalendlyButton.astro';
+import { site } from '@/config/site';
+import { divisions } from '@/lib/nav';
+import { url } from '@/lib/url';
+import { localBusinessSchema } from '@/lib/schema';
+
+const cases = await getCollection('case-studies');
+const featured = cases.find((c) => c.data.featured) ?? cases[0];
+---
+
+<BaseLayout
+  title="Eagle Innovia Ltd | Cloud, Healthcare & Education, Abuja"
+  description="Cloud engineering, remote healthcare support and practical training from Kuje, Abuja. Serving clients in the UK, USA, Canada, the EU and Nigeria."
+  schema={[localBusinessSchema()]}
+>
+  <Hero variant="home" eyebrow={site.focus.join(' • ')} title={site.tagline} lead={site.description}>
+    <a href={url('/technology')} class="btn-accent">Explore cloud services</a>
+    <CalendlyButton class="btn-outline-light">Book a free call</CalendlyButton>
+  </Hero>
+
+  <section class="section" aria-labelledby="divisions-heading">
+    <div class="container-site">
+      <SectionHeading
+        id="divisions-heading"
+        eyebrow="What we do"
+        title="Four divisions, one standard of work"
+        lead="Our two core areas are technology and healthcare. We also train people for remote careers and make natural wellness products."
+      />
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {divisions.map((d) => <DivisionCard {...d} />)}
+      </div>
+    </div>
+  </section>
+
+  <CertStrip />
+
+  {
+    featured && (
+      <section class="section" aria-labelledby="case-heading">
+        <div class="container-site">
+          <SectionHeading id="case-heading" eyebrow="Featured work" title="A platform we built and run" />
+          <CaseStudyCard
+            slug={featured.id}
+            client={featured.data.client}
+            sector={featured.data.sector}
+            summary={featured.data.summary}
+            siteUrl={featured.data.url}
+            features={featured.data.features.map((f) => f.title)}
+          />
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section bg-off-white" aria-labelledby="course-heading">
+    <div class="container-site">
+      <SectionHeading
+        id="course-heading"
+        eyebrow="Free training"
+        title="Learn AWS for free with Light Cloud"
+        lead="We teach what we do. Our free course takes complete beginners to job-ready cloud skills."
+      />
+      <CourseCard />
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="process-heading">
+    <div class="container-site">
+      <SectionHeading
+        id="process-heading"
+        eyebrow="How we work"
+        title="Discover, design, deliver, support"
+        lead="A simple process that keeps you informed and in control."
+      />
+      <ProcessSteps />
+    </div>
+  </section>
+
+  <Testimonials />
+
+  <CTABand />
+</BaseLayout>

@@ -1,0 +1,46 @@
+---
+/**
+ * Bot-resistant email link. The address is stored reversed + base64-encoded in data attributes
+ * and assembled in the browser after load. Without JS, a "[at] / [dot]" version is shown.
+ * Never pass a full address to this component — pass user and domain separately.
+ */
+interface Props {
+  user: string;
+  domain: string;
+  class?: string;
+  /** Optional visible label instead of the address (e.g. "Email us"). */
+  label?: string;
+}
+const { user, domain, class: className = '', label } = Astro.props;
+const enc = (s: string) => Buffer.from([...s].reverse().join(''), 'utf8').toString('base64');
+const [first, ...rest] = domain.split('.');
+const fallback = `${user} [at] ${first} [dot] ${rest.join(' [dot] ')}`;
+---
+
+<span
+  class="obf-email"
+  data-obf-email
+  data-u={enc(user)}
+  data-d={enc(domain)}
+  data-class={className}
+  data-label={label}
+  ><noscript>{fallback}</noscript></span
+>
+
+<script>
+  const dec = (s: string) => [...atob(s)].reverse().join('');
+  function hydrate() {
+    document.querySelectorAll<HTMLElement>('[data-obf-email]').forEach((el) => {
+      const { u, d, label } = el.dataset;
+      if (!u || !d) return;
+      const addr = `${dec(u)}${String.fromCharCode(64)}${dec(d)}`;
+      const a = document.createElement('a');
+      a.href = `mail${'to'}:${addr}`;
+      a.textContent = label || addr;
+      if (el.dataset.class) a.className = el.dataset.class;
+      el.replaceChildren(a);
+      el.removeAttribute('data-obf-email');
+    });
+  }
+  hydrate();
+</script>

@@ -1,0 +1,29 @@
+---
+import { url } from '@/lib/url';
+
+interface Props {
+  items: { name: string; path: string }[];
+}
+const { items } = Astro.props;
+---
+
+<nav aria-label="Breadcrumb" class="border-b border-line bg-off-white">
+  <ol class="container-site flex flex-wrap items-center gap-x-2 py-3 text-sm text-ink-muted">
+    {
+      items.map((item, i) => (
+        <li class="flex items-center gap-2">
+          {i > 0 && <span aria-hidden="true">/</span>}
+          {i === items.length - 1 ? (
+            <span aria-current="page" class="font-bold text-midnight">
+              {item.name}
+            </span>
+          ) : (
+            <a href={url(item.path)} class="text-teal hover:underline">
+              {item.name}
+            </a>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+</nav>

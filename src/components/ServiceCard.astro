@@ -1,0 +1,36 @@
+---
+import { url } from '@/lib/url';
+import Icon from './Icon.astro';
+
+interface Props {
+  title: string;
+  text: string;
+  icon?: string;
+  href?: string;
+  accent?: 'teal' | 'sage';
+}
+const { title, text, icon = 'sparkles', href, accent = 'teal' } = Astro.props;
+const iconCls = accent === 'sage' ? 'bg-sage-light text-sage-dark' : 'bg-teal-light text-teal';
+const Tag = href ? 'a' : 'div';
+---
+
+<Tag
+  href={href ? url(href) : undefined}
+  class:list={[
+    'card flex h-full flex-col p-6 no-underline',
+    href && 'group transition-shadow hover:shadow-[var(--shadow-lift)]',
+  ]}
+>
+  <span class:list={['mb-4 inline-flex h-11 w-11 items-center justify-center rounded-[12px]', iconCls]}>
+    <Icon name={icon} size={22} />
+  </span>
+  <h3 class="text-lg">{title}</h3>
+  <p class="mt-2 flex-1 text-base text-ink-muted">{text}</p>
+  {
+    href && (
+      <span class="mt-4 inline-flex items-center gap-1 font-bold text-teal">
+        Learn more <Icon name="arrow-right" size={18} />
+      </span>
+    )
+  }
+</Tag>

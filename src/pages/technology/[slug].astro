@@ -1,0 +1,121 @@
+---
+/** Shared template for every Technology service page. Content lives in src/content/services/*.md */
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Hero from '@/components/Hero.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import ServiceCard from '@/components/ServiceCard.astro';
+import CheckList from '@/components/CheckList.astro';
+import FAQ from '@/components/FAQ.astro';
+import CTABand from '@/components/CTABand.astro';
+import CalendlyButton from '@/components/CalendlyButton.astro';
+import { site, isSet } from '@/config/site';
+import { url } from '@/lib/url';
+import { serviceSchema, faqSchema } from '@/lib/schema';
+
+export async function getStaticPaths() {
+  const services = await getCollection('services');
+  return services.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props as { entry: CollectionEntry<'services'> };
+const s = entry.data;
+const path = `/technology/${entry.id}`;
+const others = (await getCollection('services'))
+  .filter((o) => o.id !== entry.id)
+  .sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout
+  title={s.metaTitle}
+  description={s.metaDescription}
+  breadcrumbs={[
+    { name: 'Technology', path: '/technology' },
+    { name: s.title, path },
+  ]}
+  schema={[
+    serviceSchema({ name: `${s.title} — Light Cloud`, description: s.metaDescription, path, serviceType: s.title }),
+    ...(s.faqs.length ? [faqSchema(s.faqs)] : []),
+  ]}
+>
+  <Hero eyebrow={`Light Cloud — ${s.title}`} title={s.h1} lead={s.intro}>
+    <CalendlyButton class="btn-accent">Book a free call</CalendlyButton>
+    <a href={url('/contact')} class="btn-outline-light">Get a quote</a>
+  </Hero>
+
+  <section class="section" aria-labelledby="what-heading">
+    <div class="container-site">
+      <SectionHeading id="what-heading" eyebrow="What we do" title={`${s.title}, done properly`} />
+      <div class="grid gap-6 sm:grid-cols-2">
+        {s.whatWeDo.map((w) => <ServiceCard title={w.title} text={w.text} icon={s.icon} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-off-white" aria-labelledby="deliverables-heading">
+    <div class="container-site grid gap-10 lg:grid-cols-2 lg:items-start">
+      <div>
+        <p class="eyebrow">Deliverables</p>
+        <h2 id="deliverables-heading" class="text-2xl sm:text-3xl">What you get</h2>
+        <p class="lead mt-4">Clear outputs you own, not a black box.</p>
+      </div>
+      <div class="card p-6 sm:p-8">
+        <CheckList items={s.deliverables} />
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="packages-heading">
+    <div class="container-site">
+      <SectionHeading
+        id="packages-heading"
+        eyebrow="Packages"
+        title="Ways to work with us"
+        lead="Every project starts with a free call. We agree scope and a fixed price before any work begins."
+      />
+      <div class="grid gap-6 lg:grid-cols-3">
+        {
+          s.packages.map((p, i) => {
+            const price = site.prices[p.priceKey];
+            return (
+              <article class:list={['card relative flex flex-col p-6', i === 1 && 'border-teal ring-2 ring-teal']}>
+                <h3 class="text-xl">{p.name}</h3>
+                <p class="mt-2 text-ink-muted">{p.summary}</p>
+                <p class="mt-5 font-heading text-2xl font-bold text-teal">
+                  {isSet(price) ? price : 'Get a quote'}
+                </p>
+                <div class="mt-5 flex-1">
+                  <CheckList items={p.includes} />
+                </div>
+                <a href={url('/contact')} class="btn-primary mt-6">
+                  {isSet(price) ? 'Get started' : 'Request a quote'}
+                </a>
+              </article>
+            );
+          })
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-off-white">
+    <div class="container-site max-w-3xl">
+      <FAQ items={s.faqs} />
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="more-heading">
+    <div class="container-site">
+      <SectionHeading id="more-heading" eyebrow="More from Light Cloud" title="Related services" />
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          others.map((o) => (
+            <ServiceCard title={o.data.title} text={o.data.summary} icon={o.data.icon} href={`/technology/${o.id}`} />
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CTABand title={`Talk to us about ${s.title.toLowerCase()}`} />
+</BaseLayout>

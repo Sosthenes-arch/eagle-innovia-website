@@ -1,0 +1,161 @@
+---
+import { Image } from 'astro:assets';
+import logo from '@/assets/logo-badge.png';
+import { mainNav } from '@/lib/nav';
+import { url, normalisePath } from '@/lib/url';
+import CalendlyButton from './CalendlyButton.astro';
+import Icon from './Icon.astro';
+
+const current = normalisePath(Astro.url.pathname);
+const isCurrent = (href: string) => normalisePath(href) === current;
+const isSection = (hrefs: string[]) => hrefs.some((h) => isCurrent(h));
+---
+
+<header class="sticky top-0 z-50 border-b border-line bg-white/95 backdrop-blur" data-site-header>
+  <div class="container-site flex h-16 items-center justify-between gap-4 lg:h-20">
+    <a
+      href={url('/')}
+      class="flex items-center gap-2.5 no-underline"
+      aria-label="Eagle Innovia Ltd — home"
+      aria-current={current === '/' ? 'page' : undefined}
+    >
+      <Image src={logo} alt="" width={44} height={44} densities={[1, 2]} loading="eager" class="h-10 w-10 lg:h-11 lg:w-11" />
+      <span class="font-decorative text-lg font-bold text-midnight sm:text-xl">Eagle Innovia</span>
+    </a>
+
+    <button
+      type="button"
+      class="inline-flex h-11 w-11 items-center justify-center rounded-[12px] text-midnight hover:bg-off-white lg:hidden"
+      aria-expanded="false"
+      aria-controls="site-menu"
+      data-menu-toggle
+    >
+      <span class="sr-only">Menu</span>
+      <span data-icon-open><Icon name="menu" /></span>
+      <span data-icon-close hidden><Icon name="x" /></span>
+    </button>
+
+    <nav
+      id="site-menu"
+      aria-label="Main"
+      class="absolute inset-x-0 top-16 hidden max-h-[calc(100vh-4rem)] overflow-y-auto border-b border-line bg-white px-4 pb-6 shadow-[var(--shadow-lift)] lg:static lg:flex lg:max-h-none lg:items-center lg:gap-2 lg:overflow-visible lg:border-0 lg:p-0 lg:shadow-none"
+      data-menu
+    >
+      <ul class="flex flex-col lg:flex-row lg:items-center lg:gap-1">
+        {
+          mainNav.map((item, i) =>
+            item.children ? (
+              <li class="relative border-b border-line lg:border-0" data-dropdown>
+                <button
+                  type="button"
+                  class:list={[
+                    'flex w-full items-center justify-between gap-1 rounded-[12px] px-3 py-3 text-left font-bold text-midnight hover:text-teal lg:w-auto lg:py-2',
+                    isSection(item.children.map((c) => c.href)) && 'text-teal',
+                  ]}
+                  aria-expanded="false"
+                  aria-controls={`dd-${i}`}
+                >
+                  {item.label}
+                  <span class="transition-transform" data-chevron>
+                    <Icon name="chevron-down" size={18} />
+                  </span>
+                </button>
+                <ul
+                  id={`dd-${i}`}
+                  hidden
+                  class="mb-2 space-y-1 pl-3 lg:absolute lg:top-full lg:left-0 lg:mt-2 lg:mb-0 lg:w-64 lg:rounded-[12px] lg:border lg:border-line lg:bg-white lg:p-2 lg:shadow-[var(--shadow-lift)]"
+                >
+                  {item.children.map((child) => (
+                    <li>
+                      <a
+                        href={url(child.href)}
+                        class="block rounded-[8px] px-3 py-2 text-midnight no-underline hover:bg-teal-light hover:text-teal aria-[current=page]:bg-teal-light aria-[current=page]:font-bold aria-[current=page]:text-teal"
+                        aria-current={isCurrent(child.href) ? 'page' : undefined}
+                      >
+                        {child.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ) : (
+              <li class="border-b border-line lg:border-0">
+                <a
+                  href={url(item.href!)}
+                  class="block rounded-[12px] px-3 py-3 font-bold text-midnight no-underline hover:text-teal aria-[current=page]:text-teal lg:py-2"
+                  aria-current={isCurrent(item.href!) ? 'page' : undefined}
+                >
+                  {item.label}
+                </a>
+              </li>
+            ),
+          )
+        }
+      </ul>
+      <div class="mt-4 lg:mt-0 lg:ml-3">
+        <CalendlyButton class="btn-primary w-full lg:w-auto">Book a call</CalendlyButton>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-site-header]');
+  if (header) {
+    const toggle = header.querySelector<HTMLButtonElement>('[data-menu-toggle]')!;
+    const menu = header.querySelector<HTMLElement>('[data-menu]')!;
+    const iconOpen = header.querySelector<HTMLElement>('[data-icon-open]')!;
+    const iconClose = header.querySelector<HTMLElement>('[data-icon-close]')!;
+    const dropdowns = [...header.querySelectorAll<HTMLElement>('[data-dropdown]')];
+
+    const setMenu = (open: boolean) => {
+      toggle.setAttribute('aria-expanded', String(open));
+      menu.classList.toggle('hidden', !open);
+      iconOpen.hidden = open;
+      iconClose.hidden = !open;
+    };
+    const setDropdown = (dd: HTMLElement, open: boolean) => {
+      const btn = dd.querySelector('button')!;
+      const list = dd.querySelector('ul')!;
+      btn.setAttribute('aria-expanded', String(open));
+      list.hidden = !open;
+      dd.querySelector<HTMLElement>('[data-chevron]')!.style.transform = open ? 'rotate(180deg)' : '';
+    };
+    const closeAll = (except?: HTMLElement) =>
+      dropdowns.forEach((d) => d !== except && setDropdown(d, false));
+
+    toggle.addEventListener('click', () => setMenu(toggle.getAttribute('aria-expanded') !== 'true'));
+
+    dropdowns.forEach((dd) => {
+      const btn = dd.querySelector('button')!;
+      btn.addEventListener('click', () => {
+        const open = btn.getAttribute('aria-expanded') !== 'true';
+        closeAll(dd);
+        setDropdown(dd, open);
+      });
+      dd.addEventListener('focusout', (e) => {
+        if (window.matchMedia('(min-width: 1024px)').matches && !dd.contains(e.relatedTarget as Node)) {
+          setDropdown(dd, false);
+        }
+      });
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!header.contains(e.target as Node)) {
+        closeAll();
+        setMenu(false);
+      }
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      const openDd = dropdowns.find((d) => d.querySelector('button')!.getAttribute('aria-expanded') === 'true');
+      if (openDd) {
+        setDropdown(openDd, false);
+        openDd.querySelector('button')!.focus();
+      } else if (toggle.getAttribute('aria-expanded') === 'true') {
+        setMenu(false);
+        toggle.focus();
+      }
+    });
+  }
+</script>

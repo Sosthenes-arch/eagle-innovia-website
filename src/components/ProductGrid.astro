@@ -1,0 +1,72 @@
+---
+/**
+ * Product cards from src/content/products. If there are no products yet, shows a store button
+ * (when the store URL is set in site.ts) or an honest "shop opening soon" note.
+ */
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import { isSet } from '@/config/site';
+import { url } from '@/lib/url';
+import Icon from './Icon.astro';
+
+interface Props {
+  line: 'naturals' | 'digital';
+  stores: { label: string; href: string }[];
+  accent?: 'teal' | 'sage';
+}
+const { line, stores, accent = 'teal' } = Astro.props;
+const products = (await getCollection('products')).filter((p) => p.data.line === line);
+const liveStores = stores.filter((s) => isSet(s.href));
+---
+
+{
+  products.length > 0 ? (
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {products.map((p) => (
+        <article class="card flex flex-col overflow-hidden">
+          {p.data.image && (
+            <Image src={p.data.image} alt={p.data.imageAlt ?? ''} width={600} height={450} class="aspect-[4/3] w-full object-cover" />
+          )}
+          <div class="flex flex-1 flex-col p-6">
+            <p class="text-xs font-bold tracking-widest text-ink-muted uppercase">{p.data.kind}</p>
+            <h3 class="mt-1 text-xl">{p.data.title}</h3>
+            <p class="mt-2 flex-1 text-ink-muted">{p.data.description}</p>
+            {p.data.price && <p class="mt-4 font-heading text-xl font-bold text-teal">{p.data.price}</p>}
+            <a href={p.data.link} target="_blank" rel="noopener" class="btn-primary mt-5">
+              Buy on {p.data.platform} <Icon name="external" size={18} />
+              <span class="sr-only">(opens in a new tab)</span>
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+  ) : (
+    <div class:list={['card p-8 text-center sm:p-12', accent === 'sage' && 'bg-sage-light/50']}>
+      <span class="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-full bg-lime text-midnight">
+        <Icon name="shop" size={28} />
+      </span>
+      {liveStores.length > 0 ? (
+        <>
+          <h3 class="mt-5 text-2xl">Visit our store</h3>
+          <p class="mx-auto mt-3 max-w-xl text-ink-muted">Browse the full range and buy securely online.</p>
+          <div class="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
+            {liveStores.map((s) => (
+              <a href={s.href} target="_blank" rel="noopener" class="btn-primary">
+                {s.label} <Icon name="external" size={18} />
+                <span class="sr-only">(opens in a new tab)</span>
+              </a>
+            ))}
+          </div>
+        </>
+      ) : (
+        <>
+          <h3 class="mt-5 text-2xl">Our online shop is opening soon</h3>
+          <p class="mx-auto mt-3 max-w-xl text-ink-muted">
+            We are setting up our store. Get in touch to ask about products or to place an order.
+          </p>
+          <a href={url('/contact')} class="btn-primary mt-6">Contact us</a>
+        </>
+      )}
+    </div>
+  )
+}

@@ -1,0 +1,75 @@
+---
+import '@fontsource/lato/400.css';
+import '@fontsource/lato/700.css';
+import '@fontsource/cinzel/600.css';
+import '@fontsource/cinzel/700.css';
+import '@fontsource/cinzel-decorative/700.css';
+import '@/styles/global.css';
+
+import SEO from '@/components/SEO.astro';
+import JsonLd from '@/components/JsonLd.astro';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import { site, isSet } from '@/config/site';
+import { organizationSchema, breadcrumbSchema } from '@/lib/schema';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  noindex?: boolean;
+  /** Extra JSON-LD objects for this page. */
+  schema?: object[];
+  /** Breadcrumb trail (excluding Home). Adds visible breadcrumbs + BreadcrumbList schema. */
+  breadcrumbs?: { name: string; path: string }[];
+}
+
+const { title, description, image, noindex, schema = [], breadcrumbs } = Astro.props;
+const crumbs = breadcrumbs ? [{ name: 'Home', path: '/' }, ...breadcrumbs] : undefined;
+const allSchema = [organizationSchema(), ...(crumbs ? [breadcrumbSchema(crumbs)] : []), ...schema];
+const { analytics } = site;
+---
+
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <SEO title={title} description={description} image={image} noindex={noindex} />
+    <JsonLd data={allSchema} />
+    {
+      analytics.provider === 'goatcounter' && isSet(analytics.goatcounterCode) && (
+        <script
+          is:inline
+          async
+          data-goatcounter={`https://${analytics.goatcounterCode}.goatcounter.com/count`}
+          src="https://gc.zgo.at/count.js"
+        />
+      )
+    }
+    {
+      analytics.provider === 'cloudflare' && isSet(analytics.cloudflareToken) && (
+        <script
+          is:inline
+          defer
+          src="https://static.cloudflareinsights.com/beacon.min.js"
+          data-cf-beacon={JSON.stringify({ token: analytics.cloudflareToken })}
+        />
+      )
+    }
+  </head>
+  <body class="flex min-h-screen flex-col">
+    <a
+      href="#main"
+      class="sr-only z-[100] rounded-[12px] bg-teal px-4 py-2 font-bold text-white focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+      >Skip to content</a
+    >
+    <Header />
+    <main id="main" class="flex-1" tabindex="-1">
+      {crumbs && <Breadcrumbs items={crumbs} />}
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

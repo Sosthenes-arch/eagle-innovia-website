@@ -1,0 +1,22 @@
+---
+// Renders nothing until real testimonials are added to src/config/site.ts.
+import { site } from '@/config/site';
+import Testimonial from './Testimonial.astro';
+import SectionHeading from './SectionHeading.astro';
+const items = site.testimonials;
+---
+
+{
+  items.length > 0 && (
+    <section class="section">
+      <div class="container-site">
+        <SectionHeading eyebrow="Testimonials" title="What our clients say" center />
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {items.map((t) => (
+            <Testimonial {...t} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}

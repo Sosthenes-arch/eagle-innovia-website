@@ -1,0 +1,130 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Hero from '@/components/Hero.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import ServiceCard from '@/components/ServiceCard.astro';
+import CaseStudyCard from '@/components/CaseStudyCard.astro';
+import CourseCard from '@/components/CourseCard.astro';
+import CTABand from '@/components/CTABand.astro';
+import CalendlyButton from '@/components/CalendlyButton.astro';
+import Icon from '@/components/Icon.astro';
+import { url } from '@/lib/url';
+import { serviceSchema } from '@/lib/schema';
+
+const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
+const afro = (await getCollection('case-studies')).find((c) => c.id === 'afroremote');
+
+const audiences = [
+  {
+    icon: 'rocket',
+    title: 'Startups',
+    text: 'Get a solid cloud setup from day one, without hiring a full DevOps team.',
+  },
+  {
+    icon: 'building',
+    title: 'Small and medium businesses',
+    text: 'Cut cloud costs, automate admin and keep your systems secure.',
+  },
+  {
+    icon: 'heart-pulse',
+    title: 'Health-tech companies',
+    text: 'Cloud and data handling designed with HIPAA and UK/EU GDPR in mind.',
+  },
+];
+const tools = ['AWS', 'Terraform', 'Kubernetes', 'Docker', 'Linux', 'GitHub Actions', 'Zoho'];
+---
+
+<BaseLayout
+  title="Light Cloud | AWS, DevOps & Cloud Services in Abuja"
+  description="Light Cloud is the technology division of Eagle Innovia: AWS engineering, DevOps, Kubernetes, security, Zoho CRM automation and web platforms."
+  breadcrumbs={[{ name: 'Technology', path: '/technology' }]}
+  schema={[
+    serviceSchema({
+      name: 'Light Cloud technology services',
+      description: 'AWS cloud engineering, DevOps, security, CRM automation and web platforms.',
+      path: '/technology',
+      serviceType: 'Cloud computing services',
+    }),
+  ]}
+>
+  <Hero
+    eyebrow="Light Cloud — Technology"
+    title="Cloud engineering and automation from Abuja"
+    lead="Light Cloud is the technology division of Eagle Innovia. Our certified engineers design, build and run AWS environments, automate delivery and secure your systems, for clients at home and abroad."
+  >
+    <CalendlyButton class="btn-accent">Book a free call</CalendlyButton>
+    <a href={url('/contact')} class="btn-outline-light">Get a quote</a>
+  </Hero>
+
+  <section class="section" aria-labelledby="who-heading">
+    <div class="container-site">
+      <SectionHeading id="who-heading" eyebrow="Who we serve" title="Built for growing teams" />
+      <div class="grid gap-6 md:grid-cols-3">
+        {audiences.map((a) => <ServiceCard title={a.title} text={a.text} icon={a.icon} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-off-white" aria-labelledby="services-heading">
+    <div class="container-site">
+      <SectionHeading
+        id="services-heading"
+        eyebrow="Services"
+        title="What Light Cloud does"
+        lead="Pick a service to see what is included, our packages and common questions."
+      />
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          services.map((s) => (
+            <ServiceCard title={s.data.title} text={s.data.summary} icon={s.data.icon} href={`/technology/${s.id}`} />
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  {
+    afro && (
+      <section class="section" aria-labelledby="case-heading">
+        <div class="container-site">
+          <SectionHeading id="case-heading" eyebrow="Our work" title="Case study" />
+          <CaseStudyCard
+            slug={afro.id}
+            client={afro.data.client}
+            sector={afro.data.sector}
+            summary={afro.data.summary}
+            siteUrl={afro.data.url}
+            features={afro.data.features.map((f) => f.title)}
+          />
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section pt-0" aria-label="Free AWS course">
+    <div class="container-site">
+      <CourseCard />
+    </div>
+  </section>
+
+  <section class="border-t border-line bg-off-white py-12" aria-labelledby="tools-heading">
+    <div class="container-site">
+      <h2 id="tools-heading" class="text-center font-sans text-sm font-bold tracking-[0.16em] text-ink-muted uppercase">
+        Tools we work with
+      </h2>
+      <ul class="mt-6 flex flex-wrap justify-center gap-3">
+        {
+          tools.map((t) => (
+            <li class="inline-flex items-center gap-2 rounded-full border border-line bg-white px-4 py-2 font-bold">
+              <Icon name="check" size={16} class="text-teal" />
+              {t}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <CTABand title="Let's look at your cloud setup together" />
+</BaseLayout>

@@ -1,0 +1,163 @@
+---
+import { getEntry } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Hero from '@/components/Hero.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import YouTubeFacade from '@/components/YouTubeFacade.astro';
+import CheckList from '@/components/CheckList.astro';
+import FAQ from '@/components/FAQ.astro';
+import CTABand from '@/components/CTABand.astro';
+import Icon from '@/components/Icon.astro';
+import SocialIcon from '@/components/SocialIcon.astro';
+import { site, isSet } from '@/config/site';
+import { url } from '@/lib/url';
+import { courseSchema, faqSchema } from '@/lib/schema';
+
+const aws = (await getEntry('programmes', 'aws-zero-to-job-ready'))!.data;
+const va = (await getEntry('programmes', 'healthcare-va-training'))!.data;
+const c = site.awsCourse;
+const faqs = [...aws.faqs, ...va.faqs];
+const cohortDate = isSet(site.vaProgramme.nextCohortDate) ? site.vaProgramme.nextCohortDate : null;
+const fee = isSet(site.vaProgramme.fee) ? site.vaProgramme.fee : null;
+---
+
+<BaseLayout
+  title="Eagle Innovia Academy | Free AWS Course & VA Training"
+  description="Free AWS course for beginners and a six-week Healthcare Virtual Assistant programme for nurses moving into remote roles. Online, from Abuja."
+  breadcrumbs={[{ name: 'Academy', path: '/academy' }]}
+  schema={[
+    courseSchema({ name: aws.title, description: aws.summary, path: '/academy', free: true }),
+    courseSchema({ name: va.title, description: va.summary, path: '/academy', mode: 'Blended' }),
+    faqSchema(faqs),
+  ]}
+>
+  <Hero
+    accent="lime"
+    eyebrow="Eagle Innovia Academy — Education"
+    title="Practical online training for remote careers"
+    lead="We teach the skills we use every day: a free AWS course for complete beginners, and a hands-on programme for nurses moving into remote healthcare roles."
+  >
+    <a href="#free-aws-course" class="btn-accent">Start learning AWS free</a>
+    <a href="#va-programme" class="btn-outline-light">Healthcare VA programme</a>
+  </Hero>
+
+  <section id="free-aws-course" class="section scroll-mt-24" aria-labelledby="aws-heading">
+    <div class="container-site">
+      <div class="mb-10 max-w-3xl">
+        <p class="inline-flex items-center gap-2 rounded-full bg-lime px-3 py-1 text-sm font-bold text-midnight">
+          <Icon name="play" size={16} /> Free course
+        </p>
+        <h2 id="aws-heading" class="mt-4 text-2xl sm:text-3xl lg:text-4xl">{aws.title}</h2>
+        <p class="lead mt-4">{aws.summary}</p>
+      </div>
+
+      <div class="grid gap-10 lg:grid-cols-5">
+        <div class="lg:col-span-3">
+          <YouTubeFacade id={c.lessons[0].id} title={`${aws.title} — ${c.lessons[0].title}`} />
+          <div class="mt-6 flex flex-col gap-3 sm:flex-row">
+            <a href={c.channel} target="_blank" rel="noopener" class="btn-primary">
+              <SocialIcon name="youtube" /> Start the free course<span class="sr-only">(opens YouTube in a new tab)</span>
+            </a>
+            {
+              isSet(c.playlist) && (
+                <a href={c.playlist} target="_blank" rel="noopener" class="btn-outline">
+                  Full playlist<span class="sr-only">(opens in a new tab)</span>
+                </a>
+              )
+            }
+            <a href={c.labRepo} target="_blank" rel="noopener" class="btn-outline">
+              <SocialIcon name="github" /> Lab files on GitHub<span class="sr-only">(opens in a new tab)</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="lg:col-span-2">
+          <h3 class="text-xl">Lessons</h3>
+          <ol class="mt-4 space-y-2">
+            {
+              c.lessons.map((l, i) => (
+                <li>
+                  <a
+                    href={`https://youtu.be/${l.id}`}
+                    target="_blank"
+                    rel="noopener"
+                    class="card flex items-center gap-3 p-4 text-midnight no-underline hover:border-teal hover:text-teal"
+                  >
+                    <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-teal-light font-bold text-teal">
+                      {i < 4 ? i + 1 : '★'}
+                    </span>
+                    <span class="flex-1 font-bold">{l.title}</span>
+                    <Icon name="external" size={18} />
+                    <span class="sr-only">(opens YouTube in a new tab)</span>
+                  </a>
+                </li>
+              ))
+            }
+          </ol>
+          <h3 class="mt-8 text-xl">Every lesson includes</h3>
+          <div class="mt-4">
+            <CheckList items={aws.format.slice(1)} />
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-12 grid gap-6 md:grid-cols-2">
+        <div class="card p-6">
+          <h3 class="text-xl">What you will learn</h3>
+          <div class="mt-4"><CheckList items={aws.learn} /></div>
+        </div>
+        <div class="card p-6">
+          <h3 class="text-xl">What you walk away with</h3>
+          <div class="mt-4"><CheckList items={aws.outcomes} /></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="va-programme" class="section scroll-mt-24 bg-off-white" aria-labelledby="va-heading">
+    <div class="container-site">
+      <SectionHeading id="va-heading" eyebrow="For nurses" title={va.title} lead={va.summary} />
+
+      <div class="grid gap-6 lg:grid-cols-3">
+        <div class="card p-6">
+          <h3 class="text-xl">Format</h3>
+          <div class="mt-4"><CheckList items={va.format} /></div>
+        </div>
+        <div class="card p-6">
+          <h3 class="text-xl">What you will learn</h3>
+          <div class="mt-4"><CheckList items={va.learn} /></div>
+        </div>
+        <div class="card p-6">
+          <h3 class="text-xl">Outcomes</h3>
+          <div class="mt-4"><CheckList items={va.outcomes} /></div>
+        </div>
+      </div>
+
+      <div class="card mt-6 flex flex-col gap-6 border-lime p-6 sm:p-8 md:flex-row md:items-center md:justify-between">
+        <dl class="grid gap-4 sm:grid-cols-2 sm:gap-10">
+          <div>
+            <dt class="text-sm font-bold tracking-widest text-ink-muted uppercase">Next cohort</dt>
+            <dd class="mt-1 font-heading text-xl font-bold">{cohortDate ?? 'Dates to be announced'}</dd>
+          </div>
+          <div>
+            <dt class="text-sm font-bold tracking-widest text-ink-muted uppercase">Fee</dt>
+            <dd class="mt-1 font-heading text-xl font-bold">{fee ?? 'Ask us for details'}</dd>
+          </div>
+        </dl>
+        <a href={url('/contact')} class="btn-primary">Join the next cohort</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container-site max-w-3xl">
+      <FAQ items={faqs} />
+    </div>
+  </section>
+
+  <CTABand
+    title="Join the next cohort"
+    text="Register your interest in the Healthcare VA programme and we will send you dates and fees as soon as they are confirmed."
+    primaryLabel="Register your interest"
+  />
+</BaseLayout>

@@ -1,0 +1,47 @@
+---
+/**
+ * Page hero. variant="home" uses the decorative headline font; "page" is used for inner pages.
+ * accent sets the thin division colour bar along the bottom.
+ */
+interface Props {
+  title: string;
+  eyebrow?: string;
+  lead?: string;
+  variant?: 'home' | 'page';
+  accent?: 'teal' | 'sage' | 'lime' | 'sage-light';
+}
+const { title, eyebrow, lead, variant = 'page', accent = 'teal' } = Astro.props;
+const accentCls = {
+  teal: 'bg-teal',
+  sage: 'bg-sage',
+  lime: 'bg-lime',
+  'sage-light': 'bg-sage-light',
+}[accent];
+---
+
+<section class="on-dark hero-dark relative overflow-hidden text-white">
+  <div class:list={['container-site', variant === 'home' ? 'py-20 sm:py-28 lg:py-32' : 'py-14 sm:py-20']}>
+    <div class="max-w-3xl">
+      {eyebrow && <p class="mb-4 text-sm font-bold tracking-[0.18em] text-lime uppercase">{eyebrow}</p>}
+      <h1
+        class:list={[
+          'text-white',
+          variant === 'home'
+            ? 'font-decorative text-3xl leading-tight font-bold sm:text-5xl lg:text-[3.4rem]'
+            : 'text-3xl sm:text-4xl lg:text-5xl',
+        ]}
+      >
+        {title}
+      </h1>
+      {lead && <p class="mt-6 max-w-2xl text-lg text-white/85 sm:text-xl">{lead}</p>}
+      {
+        Astro.slots.has('default') && (
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <slot />
+          </div>
+        )
+      }
+    </div>
+  </div>
+  <div class:list={['h-1.5 w-full', accentCls]} aria-hidden="true"></div>
+</section>

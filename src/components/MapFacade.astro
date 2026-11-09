@@ -1,0 +1,39 @@
+---
+/** Click-to-load OpenStreetMap of Kuje, Abuja. No API key, no third-party requests until clicked. */
+import { site } from '@/config/site';
+import Icon from './Icon.astro';
+const { lat, lng } = site.location;
+const d = 0.04;
+const src = `https://www.openstreetmap.org/export/embed.html?bbox=${lng - d}%2C${lat - d}%2C${lng + d}%2C${lat + d}&layer=mapnik&marker=${lat}%2C${lng}`;
+const link = `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lng}#map=13/${lat}/${lng}`;
+---
+
+<div class="overflow-hidden rounded-[12px] border border-line">
+  <div class="relative aspect-[4/3] bg-sage-light" data-map data-src={src}>
+    <button
+      type="button"
+      class="absolute inset-0 flex w-full flex-col items-center justify-center gap-2 text-sage-dark hover:text-teal"
+      data-map-load
+    >
+      <Icon name="map-pin" size={36} />
+      <span class="font-bold">Show map of Kuje, Abuja</span>
+      <span class="text-xs text-ink-muted">Loads OpenStreetMap</span>
+    </button>
+  </div>
+  <a href={link} target="_blank" rel="noopener" class="block bg-white px-4 py-2 text-sm"
+    >Open larger map<span class="sr-only"> (opens in a new tab)</span></a
+  >
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-map]').forEach((box) => {
+    box.querySelector('[data-map-load]')?.addEventListener('click', () => {
+      const f = document.createElement('iframe');
+      f.src = box.dataset.src!;
+      f.title = 'Map of Kuje, Abuja';
+      f.loading = 'lazy';
+      f.className = 'absolute inset-0 h-full w-full border-0';
+      box.replaceChildren(f);
+    });
+  });
+</script>

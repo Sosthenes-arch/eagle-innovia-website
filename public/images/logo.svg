@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="64" viewBox="0 0 320 64" role="img" aria-label="Eagle Innovia Ltd">
+  <!-- Placeholder text logo. Replace with the real vector logo when available. -->
+  <circle cx="32" cy="32" r="28" fill="#0B7A75"/>
+  <path d="M14 22 L32 40 L50 22 L44 22 L32 34 L20 22 Z" fill="#A8D400"/>
+  <text x="72" y="40" font-family="'Cinzel Decorative', Georgia, serif" font-size="24" font-weight="700" fill="#0D1B1E">Eagle Innovia</text>
+</svg>

@@ -1,0 +1,42 @@
+---
+import { site } from '@/config/site';
+import { canonical, url } from '@/lib/url';
+
+export interface SEOProps {
+  title: string;
+  description: string;
+  image?: string;
+  noindex?: boolean;
+  type?: 'website' | 'article';
+}
+const { title, description, image = '/images/og-default.png', noindex = false, type = 'website' } =
+  Astro.props as SEOProps;
+
+const canonicalUrl = canonical(Astro.url.pathname);
+const ogImage = image.startsWith('http') ? image : `${site.url}${image}`;
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalUrl} />
+{noindex && <meta name="robots" content="noindex, follow" />}
+
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content={site.name} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content="en_GB" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+
+<link rel="icon" type="image/png" sizes="32x32" href={url('/favicon-32.png')} />
+<link rel="icon" type="image/png" sizes="48x48" href={url('/favicon-48.png')} />
+<link rel="apple-touch-icon" href={url('/apple-touch-icon.png')} />
+<link rel="manifest" href={url('/site.webmanifest')} />
+<meta name="theme-color" content="#0D1B1E" />

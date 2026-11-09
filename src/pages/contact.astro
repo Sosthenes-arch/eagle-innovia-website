@@ -1,0 +1,82 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Hero from '@/components/Hero.astro';
+import ZohoContactForm from '@/components/ZohoContactForm.astro';
+import ObfuscatedEmail from '@/components/ObfuscatedEmail.astro';
+import CalendlyButton from '@/components/CalendlyButton.astro';
+import CalendlyInline from '@/components/CalendlyInline.astro';
+import WhatsAppButton from '@/components/WhatsAppButton.astro';
+import MapFacade from '@/components/MapFacade.astro';
+import Icon from '@/components/Icon.astro';
+import { site, isSet } from '@/config/site';
+import { localBusinessSchema } from '@/lib/schema';
+---
+
+<BaseLayout
+  title="Contact Eagle Innovia | Kuje, Abuja, Nigeria"
+  description="Send us a message, book a free 30-minute call or email our team in Kuje, Abuja. We reply to every enquiry from Nigeria, the UK, US, Canada and the EU."
+  breadcrumbs={[{ name: 'Contact', path: '/contact' }]}
+  schema={[localBusinessSchema()]}
+>
+  <Hero
+    eyebrow="Contact"
+    title="Contact our team in Abuja"
+    lead="Tell us what you need and we will reply within two working days. Prefer to talk? Book a free 30-minute call."
+  />
+
+  <section class="section bg-off-white">
+    <div class="container-site grid gap-8 lg:grid-cols-5">
+      <div class="lg:col-span-3">
+        <ZohoContactForm />
+      </div>
+
+      <aside class="space-y-6 lg:col-span-2" aria-label="Other ways to reach us">
+        <div class="card p-6">
+          <h2 class="text-xl">Talk to us</h2>
+          <ul class="mt-4 space-y-4">
+            <li class="flex items-start gap-3">
+              <span class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[12px] bg-teal-light text-teal">
+                <Icon name="mail" size={20} />
+              </span>
+              <div class="flex flex-col">
+                <span class="font-bold">Email</span>
+                <ObfuscatedEmail {...site.emails.info} class="break-all" />
+                <ObfuscatedEmail {...site.emails.gmail} class="break-all" />
+              </div>
+            </li>
+            {
+              isSet(site.phone) && (
+                <li class="flex items-start gap-3">
+                  <span class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[12px] bg-teal-light text-teal">
+                    <Icon name="message" size={20} />
+                  </span>
+                  <div>
+                    <span class="block font-bold">Phone</span>
+                    <a href={`tel:${site.phone.replace(/\s/g, '')}`}>{site.phone}</a>
+                  </div>
+                </li>
+              )
+            }
+            <li class="flex items-start gap-3">
+              <span class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[12px] bg-teal-light text-teal">
+                <Icon name="map-pin" size={20} />
+              </span>
+              <div>
+                <span class="block font-bold">Office</span>
+                <span>{site.location.display}</span>
+              </div>
+            </li>
+          </ul>
+          <div class="mt-6 flex flex-col gap-3">
+            <CalendlyButton class="btn-primary" icon>Book a 30-minute call</CalendlyButton>
+            <WhatsAppButton />
+          </div>
+        </div>
+
+        <CalendlyInline />
+
+        <MapFacade />
+      </aside>
+    </div>
+  </section>
+</BaseLayout>

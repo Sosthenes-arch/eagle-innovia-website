@@ -1,0 +1,47 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import CalendlyButton from '@/components/CalendlyButton.astro';
+import CheckList from '@/components/CheckList.astro';
+import Icon from '@/components/Icon.astro';
+import { url } from '@/lib/url';
+---
+
+<BaseLayout
+  title="Thank you | Eagle Innovia Ltd"
+  description="Thanks for contacting Eagle Innovia. We have received your message and will reply soon."
+  noindex
+>
+  <section class="section">
+    <div class="container-site max-w-2xl text-center">
+      <span class="mx-auto inline-flex h-16 w-16 items-center justify-center rounded-full bg-lime text-midnight">
+        <Icon name="check" size={32} strokeWidth={2.5} />
+      </span>
+      <h1 class="mt-6 text-3xl sm:text-4xl">Thank you, your message is on its way</h1>
+      <p class="lead mt-4">We have received your enquiry and a member of our team in Abuja will reply soon.</p>
+
+      <div class="card mt-10 p-6 text-left sm:p-8">
+        <h2 class="text-xl">What happens next</h2>
+        <div class="mt-4">
+          <CheckList
+            items={[
+              'We read your message and pass it to the right team.',
+              'We reply within two working days, usually sooner.',
+              'If it helps, we set up a short call to understand your needs.',
+            ]}
+          />
+        </div>
+        <p class="mt-6 text-ink-muted">Want to talk sooner? Pick a time that suits you.</p>
+        <CalendlyButton class="btn-primary mt-4" icon>Book a 30-minute call</CalendlyButton>
+      </div>
+
+      <nav aria-label="Continue browsing" class="mt-10">
+        <ul class="flex flex-wrap justify-center gap-x-6 gap-y-2 font-bold">
+          <li><a href={url('/')}>Home</a></li>
+          <li><a href={url('/technology')}>Technology</a></li>
+          <li><a href={url('/healthcare')}>Healthcare</a></li>
+          <li><a href={url('/academy')}>Academy</a></li>
+        </ul>
+      </nav>
+    </div>
+  </section>
+</BaseLayout>

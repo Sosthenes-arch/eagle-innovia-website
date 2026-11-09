@@ -1,0 +1,92 @@
+---
+// DRAFT — FOR LEGAL REVIEW. This privacy notice is a starting draft and must be reviewed by a
+// qualified lawyer (Nigeria Data Protection Act 2023, UK GDPR, EU GDPR) before relying on it.
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ObfuscatedEmail from '@/components/ObfuscatedEmail.astro';
+import { site } from '@/config/site';
+import { url } from '@/lib/url';
+const updated = '9 November 2026';
+---
+
+<BaseLayout
+  title="Privacy Notice | Eagle Innovia Ltd"
+  description="How Eagle Innovia Ltd collects, uses and protects personal data under the Nigeria Data Protection Act 2023 and UK and EU GDPR."
+  breadcrumbs={[{ name: 'Privacy', path: '/privacy' }]}
+>
+  <section class="section">
+    <article class="container-site prose-site max-w-3xl">
+      <h1 class="mb-2 text-3xl sm:text-4xl">Privacy notice</h1>
+      <p class="text-ink-muted">Last updated: {updated}</p>
+
+      <h2>Who we are</h2>
+      <p>
+        {site.name} ("we", "us") is a company registered in Nigeria and based in {site.location.display}. We are
+        the data controller for personal data collected through this website. We follow the Nigeria Data
+        Protection Act 2023 (NDPA) and, where we serve people in the United Kingdom or European Union, the UK GDPR
+        and EU GDPR.
+      </p>
+
+      <h2>What we collect</h2>
+      <ul>
+        <li>
+          <strong>Contact form:</strong> your first and last name, phone number, company and the message you send
+          us (and your email address if the form asks for it).
+        </li>
+        <li><strong>Call bookings:</strong> the name, email address and any notes you give when booking a call.</li>
+        <li><strong>Emails and messages:</strong> anything you choose to send us directly.</li>
+      </ul>
+      <p>We do not use advertising cookies, and this website does not run analytics tracking.</p>
+
+      <h2>How we use your data and our legal basis</h2>
+      <ul>
+        <li>To reply to your enquiry and provide a quote or proposal (steps before a contract, or legitimate interests).</li>
+        <li>To deliver services you have asked for (performance of a contract).</li>
+        <li>To meet legal, tax and accounting duties (legal obligation).</li>
+      </ul>
+      <p>We do not sell your personal data, and we do not use it for automated decisions that affect you.</p>
+
+      <h2>Who we share it with</h2>
+      <ul>
+        <li>
+          <strong>Zoho CRM</strong> (Zoho Corporation): our contact form sends your details directly to our Zoho CRM
+          account, where we manage enquiries.
+        </li>
+        <li><strong>Calendly</strong>: when you book a call, Calendly processes your booking details.</li>
+        <li><strong>Email providers</strong> we use to send and receive messages.</li>
+        <li>
+          <strong>YouTube and OpenStreetMap</strong>: videos and the map only load when you click them. YouTube
+          videos use the privacy-enhanced youtube-nocookie.com domain.
+        </li>
+        <li><strong>GitHub Pages</strong>, which hosts this website and may log technical data such as IP addresses.</li>
+      </ul>
+      <p>
+        Some of these providers process data outside Nigeria, the UK or the EU. Where this happens, we rely on the
+        safeguards the provider offers, such as standard contractual clauses.
+      </p>
+
+      <h2>How long we keep it</h2>
+      <p>
+        We keep enquiry data for up to 24 months after our last contact, unless you become a client. Client
+        records are kept for as long as the law requires (usually six years for financial records).
+      </p>
+
+      <h2>Your rights</h2>
+      <p>
+        You can ask to access, correct, delete or move your data, object to or restrict how we use it, and withdraw
+        consent at any time. You can also complain to the Nigeria Data Protection Commission (NDPC), the UK
+        Information Commissioner's Office (ICO) or your local EU data protection authority.
+      </p>
+
+      <h2>Health information</h2>
+      <p>
+        Please do not send patient or medical information through this website's contact form. Healthcare client
+        data is handled under a separate written agreement.
+      </p>
+
+      <h2>Contact us about privacy</h2>
+      <p>
+        Email <ObfuscatedEmail {...site.emails.info} /> or use our <a href={url('/contact')}>contact page</a>.
+      </p>
+    </article>
+  </section>
+</BaseLayout>

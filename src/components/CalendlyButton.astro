@@ -1,0 +1,16 @@
+---
+import { site } from '@/config/site';
+import Icon from './Icon.astro';
+
+interface Props {
+  class?: string;
+  icon?: boolean;
+}
+const { class: className = 'btn-primary', icon = false } = Astro.props;
+---
+
+<a href={site.calendly} target="_blank" rel="noopener" class={className}>
+  {icon && <Icon name="calendar" size={20} />}
+  <slot>Book a call</slot>
+  <span class="sr-only">(opens in a new tab)</span>
+</a>

@@ -1,0 +1,27 @@
+---
+import { site, isSet } from '@/config/site';
+import Icon from './Icon.astro';
+
+interface Props {
+  class?: string;
+  message?: string;
+}
+const { class: className = 'btn-outline', message = 'Hello Eagle Innovia, I would like to ask about…' } =
+  Astro.props;
+const number = site.whatsapp.replace(/\D/g, '');
+---
+
+{
+  isSet(site.whatsapp) && (
+    <a
+      href={`https://wa.me/${number}?text=${encodeURIComponent(message)}`}
+      target="_blank"
+      rel="noopener"
+      class={className}
+    >
+      <Icon name="message" size={20} />
+      Chat on WhatsApp
+      <span class="sr-only">(opens in a new tab)</span>
+    </a>
+  )
+}

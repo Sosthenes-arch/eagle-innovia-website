@@ -1,0 +1,78 @@
+---
+/**
+ * Branded form field for the Zoho form. `name` must match the Zoho-generated name exactly.
+ */
+interface Props {
+  id: string;
+  name: string;
+  label: string;
+  type?: 'text' | 'email' | 'tel' | 'url' | 'number';
+  required?: boolean;
+  maxlength?: number;
+  autocomplete?: string;
+  placeholder?: string;
+  textarea?: boolean;
+  rows?: number;
+  /** Picklist options; renders a <select>. Use '-None-' as the first value to match Zoho. */
+  options?: string[];
+  /** Span both columns on desktop. */
+  full?: boolean;
+}
+const {
+  id,
+  name,
+  label,
+  type = 'text',
+  required = false,
+  maxlength,
+  autocomplete,
+  placeholder,
+  textarea = false,
+  rows = 5,
+  options,
+  full = false,
+} = Astro.props;
+
+const errorId = `${id}-error`;
+const control =
+  'block w-full rounded-[12px] border border-line bg-white px-4 py-3 text-base text-midnight placeholder:text-ink-muted/70 shadow-sm transition focus:border-teal focus:ring-4 focus:ring-teal/25 focus:outline-none aria-[invalid=true]:border-red-700 aria-[invalid=true]:ring-red-700/20';
+---
+
+<div class:list={[full && 'sm:col-span-2']}>
+  <label for={id} class="mb-1.5 block font-bold">
+    {label}
+    {required && <span class="text-teal" aria-hidden="true"> *</span>}
+  </label>
+  {
+    textarea ? (
+      <textarea
+        id={id}
+        name={name}
+        rows={rows}
+        placeholder={placeholder}
+        aria-required={required ? 'true' : 'false'}
+        aria-describedby={errorId}
+        class:list={[control, 'resize-y']}
+      />
+    ) : options ? (
+      <select id={id} name={name} aria-required={required ? 'true' : 'false'} aria-describedby={errorId} class={control}>
+        {options.map((o) => (
+          <option value={o}>{o === '-None-' ? 'Please choose' : o}</option>
+        ))}
+      </select>
+    ) : (
+      <input
+        type={type}
+        id={id}
+        name={name}
+        maxlength={maxlength}
+        autocomplete={autocomplete}
+        placeholder={placeholder}
+        aria-required={required ? 'true' : 'false'}
+        aria-describedby={errorId}
+        class={control}
+      />
+    )
+  }
+  <p id={errorId} class="mt-1.5 text-sm font-bold text-red-700" role="alert" hidden></p>
+</div>

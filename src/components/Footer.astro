@@ -1,0 +1,124 @@
+---
+import { Image } from 'astro:assets';
+import logo from '@/assets/logo-badge.png';
+import { site, isSet } from '@/config/site';
+import { url } from '@/lib/url';
+import { technologyLinks } from '@/lib/nav';
+import ObfuscatedEmail from './ObfuscatedEmail.astro';
+import SocialIcon from './SocialIcon.astro';
+import Icon from './Icon.astro';
+
+const socials = (
+  [
+    ['linkedin', 'LinkedIn', site.social.linkedin],
+    ['x', 'X (Twitter)', site.social.x],
+    ['facebook', 'Facebook', site.social.facebook],
+    ['instagram', 'Instagram', site.social.instagram],
+    ['youtube', 'YouTube — Light Cloud', site.social.youtube],
+  ] as const
+).filter(([, , href]) => isSet(href));
+
+const year = new Date().getFullYear();
+const linkCls = 'inline-block py-1 text-white/80 no-underline hover:text-lime hover:underline';
+---
+
+<footer class="on-dark bg-midnight text-white/80">
+  <div class="container-site grid gap-10 py-14 md:grid-cols-2 lg:grid-cols-12">
+    <div class="lg:col-span-4">
+      <a href={url('/')} class="inline-flex items-center gap-3 no-underline">
+        <Image src={logo} alt="" width={48} height={48} densities={[1, 2]} class="h-12 w-12" />
+        <span class="font-decorative text-xl font-bold text-white">Eagle Innovia</span>
+      </a>
+      <p class="mt-4 max-w-sm text-sm leading-relaxed">
+        Eagle Innovia Ltd is a registered Nigerian company in Kuje, Abuja. We deliver technology,
+        healthcare and education solutions to clients in Nigeria, the UK, USA, Canada, Switzerland and
+        the EU.
+      </p>
+      {
+        socials.length > 0 && (
+          <ul class="mt-5 flex gap-3" aria-label="Social media">
+            {socials.map(([name, label, href]) => (
+              <li>
+                <a
+                  href={href}
+                  target="_blank"
+                  rel="noopener"
+                  class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white hover:bg-lime hover:text-midnight"
+                >
+                  <SocialIcon name={name} />
+                  <span class="sr-only">{label} (opens in a new tab)</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </div>
+
+    <div class="lg:col-span-3">
+      <h2 class="font-sans text-sm font-bold tracking-widest text-white uppercase">Divisions</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li><a class={linkCls} href={url('/technology')}>Light Cloud — Technology</a></li>
+        <li><a class={linkCls} href={url('/healthcare')}>Ozzie Health Consult — Healthcare</a></li>
+        <li><a class={linkCls} href={url('/academy')}>Eagle Innovia Academy — Education</a></li>
+        <li><a class={linkCls} href={url('/naturals')}>Ozzie Naturals — Wellness</a></li>
+        <li><a class={linkCls} href={url('/products')}>Digital Products</a></li>
+      </ul>
+    </div>
+
+    <div class="lg:col-span-2">
+      <h2 class="font-sans text-sm font-bold tracking-widest text-white uppercase">Services</h2>
+      <ul class="mt-4 space-y-2 text-sm">
+        {
+          technologyLinks.slice(1).map((l) => (
+            <li>
+              <a class={linkCls} href={url(l.href)}>
+                {l.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div class="lg:col-span-3">
+      <h2 class="font-sans text-sm font-bold tracking-widest text-white uppercase">Contact</h2>
+      <ul class="mt-4 space-y-3 text-sm">
+        <li class="flex items-start gap-2">
+          <Icon name="mail" size={18} class="mt-0.5 shrink-0 text-lime" />
+          <span class="flex flex-col gap-1">
+            <ObfuscatedEmail {...site.emails.info} class={linkCls} />
+            <ObfuscatedEmail {...site.emails.gmail} class={linkCls} />
+          </span>
+        </li>
+        <li class="flex items-start gap-2">
+          <Icon name="calendar" size={18} class="mt-0.5 shrink-0 text-lime" />
+          <a class={linkCls} href={site.calendly} target="_blank" rel="noopener"
+            >Book a 30-minute call<span class="sr-only"> (opens in a new tab)</span></a
+          >
+        </li>
+        <li class="flex items-start gap-2">
+          <Icon name="map-pin" size={18} class="mt-0.5 shrink-0 text-lime" />
+          <span>{site.location.display}</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="border-t border-white/10">
+    <div
+      class="container-site flex flex-col gap-3 py-6 text-xs text-white/70 sm:flex-row sm:items-center sm:justify-between"
+    >
+      <p>
+        © {year}
+        {site.name}. All rights reserved.
+        {isSet(site.cacNumber) && <span> CAC registration: {site.cacNumber}.</span>}
+      </p>
+      <ul class="flex gap-5">
+        <li><a class={linkCls} href={url('/privacy')}>Privacy</a></li>
+        <li><a class={linkCls} href={url('/terms')}>Terms</a></li>
+        <li><a class={linkCls} href={url('/contact')}>Contact</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>

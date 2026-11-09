@@ -1,0 +1,58 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Hero from '@/components/Hero.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import ServiceCard from '@/components/ServiceCard.astro';
+import ProductGrid from '@/components/ProductGrid.astro';
+import CTABand from '@/components/CTABand.astro';
+import { site } from '@/config/site';
+
+const ranges = [
+  { icon: 'sparkles', title: 'Skin care', text: 'Natural products for everyday skin care.' },
+  { icon: 'leaf', title: 'Hair care', text: 'Natural products for healthy hair and scalp.' },
+  { icon: 'hand-heart', title: 'Wellness', text: 'Natural products to support everyday wellbeing.' },
+];
+---
+
+<BaseLayout
+  title="Ozzie Naturals | Natural Skin, Hair & Wellness Products"
+  description="Ozzie Naturals is the natural skin, hair and wellness brand of Eagle Innovia Ltd, based in Abuja, Nigeria."
+  breadcrumbs={[
+    { name: 'Shop', path: '/naturals' },
+    { name: 'Ozzie Naturals', path: '/naturals' },
+  ]}
+>
+  <Hero
+    accent="sage-light"
+    eyebrow="Ozzie Naturals — Wellness"
+    title="Natural skin, hair and wellness products from Abuja"
+    lead="Ozzie Naturals is the wellness brand of Eagle Innovia Ltd. We make natural products for skin, hair and everyday wellbeing."
+  />
+
+  <section class="section" aria-labelledby="story-heading">
+    <div class="container-site">
+      <SectionHeading
+        id="story-heading"
+        eyebrow="Our story"
+        title="Care that starts with nature"
+        lead="Ozzie Naturals grew from the same values that guide all of Eagle Innovia: evidence, responsibility and care for the people we serve. Our products are made to be simple, natural and honest."
+      />
+      <div class="grid gap-6 md:grid-cols-3">
+        {ranges.map((r) => <ServiceCard {...r} accent="sage" />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-sage-light/60" aria-labelledby="products-heading">
+    <div class="container-site">
+      <SectionHeading id="products-heading" eyebrow="Shop" title="Ozzie Naturals products" />
+      <ProductGrid line="naturals" accent="sage" stores={[{ label: 'Shop on Selar', href: site.stores.naturals }]} />
+    </div>
+  </section>
+
+  <CTABand
+    title="Questions about our products?"
+    text="Send us a message and we will help you choose the right product."
+    showCalendly={false}
+  />
+</BaseLayout>

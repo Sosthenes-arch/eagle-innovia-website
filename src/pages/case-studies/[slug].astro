@@ -1,0 +1,97 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Hero from '@/components/Hero.astro';
+import ServiceCard from '@/components/ServiceCard.astro';
+import CheckList from '@/components/CheckList.astro';
+import CTABand from '@/components/CTABand.astro';
+import Icon from '@/components/Icon.astro';
+import { site, isSet } from '@/config/site';
+
+export async function getStaticPaths() {
+  const cases = await getCollection('case-studies');
+  return cases.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+const { entry } = Astro.props as { entry: CollectionEntry<'case-studies'> };
+const c = entry.data;
+
+// AfroRemote screenshot and results come from site.ts (hidden while TODO / empty).
+const isAfro = entry.id === 'afroremote';
+const results = isAfro ? site.afroremote.results : [];
+const shots = import.meta.glob<{ default: ImageMetadata }>('/src/assets/**/*.{png,jpg,jpeg,webp,avif}');
+const shotPath = isAfro && isSet(site.afroremote.screenshot) ? `/src/assets/${site.afroremote.screenshot}` : null;
+const screenshot = shotPath && shots[shotPath] ? (await shots[shotPath]()).default : null;
+---
+
+<BaseLayout
+  title={c.metaTitle}
+  description={c.metaDescription}
+  breadcrumbs={[
+    { name: 'Case Studies', path: '/case-studies' },
+    { name: c.client, path: `/case-studies/${entry.id}` },
+  ]}
+>
+  <Hero eyebrow={`Case study — ${c.sector}`} title={c.h1} lead={c.summary}>
+    <a href={c.url} target="_blank" rel="noopener" class="btn-accent">
+      Visit {c.client} <Icon name="external" size={18} /><span class="sr-only">(opens in a new tab)</span>
+    </a>
+  </Hero>
+
+  <section class="section">
+    <div class="container-site grid gap-10 lg:grid-cols-2">
+      <div>
+        <p class="eyebrow">The client need</p>
+        <h2 class="text-2xl sm:text-3xl">The problem</h2>
+        <p class="lead mt-4">{c.need}</p>
+      </div>
+      <div>
+        <p class="eyebrow">What we built</p>
+        <h2 class="text-2xl sm:text-3xl">The solution</h2>
+        <p class="lead mt-4">{c.built}</p>
+      </div>
+    </div>
+  </section>
+
+  {
+    screenshot && (
+      <section class="pb-16">
+        <div class="container-site">
+          <Image src={screenshot} alt={`${c.client} home page`} width={1200} class="w-full rounded-[12px] shadow-[var(--shadow-lift)]" />
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section bg-off-white" aria-labelledby="features-heading">
+    <div class="container-site">
+      <p class="eyebrow">Features</p>
+      <h2 id="features-heading" class="mb-10 text-2xl sm:text-3xl">Key features</h2>
+      <div class="grid gap-6 sm:grid-cols-2">
+        {c.features.map((f) => <ServiceCard title={f.title} text={f.text} icon="check" />)}
+      </div>
+    </div>
+  </section>
+
+  {
+    results.length > 0 && (
+      <section class="section" aria-labelledby="results-heading">
+        <div class="container-site max-w-3xl">
+          <h2 id="results-heading" class="mb-6 text-2xl sm:text-3xl">Results</h2>
+          <CheckList items={results} />
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section">
+    <div class="container-site text-center">
+      <h2 class="text-2xl sm:text-3xl">See it live</h2>
+      <a href={c.url} target="_blank" rel="noopener" class="btn-primary mt-6">
+        Visit {c.client} <Icon name="external" size={18} /><span class="sr-only">(opens in a new tab)</span>
+      </a>
+    </div>
+  </section>
+
+  <CTABand title="Want a platform like this?" text="We design and build web platforms for real users. Book a free call to talk about your idea." />
+</BaseLayout>

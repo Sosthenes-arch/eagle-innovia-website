@@ -1,0 +1,136 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Hero from '@/components/Hero.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import ServiceCard from '@/components/ServiceCard.astro';
+import ProcessSteps from '@/components/ProcessSteps.astro';
+import CheckList from '@/components/CheckList.astro';
+import FAQ from '@/components/FAQ.astro';
+import CTABand from '@/components/CTABand.astro';
+import CalendlyButton from '@/components/CalendlyButton.astro';
+import { url } from '@/lib/url';
+import { serviceSchema, faqSchema } from '@/lib/schema';
+
+const services = [
+  {
+    icon: 'stethoscope',
+    title: 'Remote healthcare support',
+    text: 'Trained, remote support for clinics and practices in the UK and US, covering admin, scheduling and patient communication.',
+  },
+  {
+    icon: 'users',
+    title: 'Medical virtual assistants',
+    text: 'HIPAA-aware medical VAs who work in your EHR, manage inboxes, book appointments and keep records up to date.',
+  },
+  {
+    icon: 'book-open',
+    title: 'Health education',
+    text: 'Clear, accurate health education content and sessions for patients, staff and communities.',
+  },
+  {
+    icon: 'laptop',
+    title: 'Health-tech enablement',
+    text: 'Help choosing, setting up and supporting the systems your practice runs on, with our Light Cloud team behind you.',
+  },
+];
+
+const process = [
+  { title: 'Understand', text: 'We learn your workflows, systems and the patient data involved.' },
+  { title: 'Agree safeguards', text: 'We agree access rules, confidentiality terms and how data is handled before work starts.' },
+  { title: 'Train and onboard', text: 'Your assistant is trained on your systems and procedures, with least-privilege access.' },
+  { title: 'Review', text: 'Regular check-ins and quality reviews, and access removed promptly when work ends.' },
+];
+
+const audiences = [
+  'Clinics and medical practices in the UK and US',
+  'Private doctors, therapists and allied health professionals',
+  'Health-tech companies that need clinical or support capacity',
+  'Healthcare organisations in Nigeria going digital',
+];
+
+const faqs = [
+  {
+    q: 'What does HIPAA-aware mean?',
+    a: 'Our team holds HIPAA certification and works to HIPAA and UK/EU data protection principles, including least-privilege access, confidentiality agreements and secure handling of patient information.',
+  },
+  {
+    q: 'What hours do your assistants work?',
+    a: 'We agree hours that match your clinic, including UK and US working hours.',
+  },
+  {
+    q: 'Which systems can your assistants use?',
+    a: 'Our assistants are trained in EHR workflows and common practice tools. We onboard them to your specific systems.',
+  },
+];
+---
+
+<BaseLayout
+  title="Ozzie Health Consult | Remote Healthcare Support"
+  description="HIPAA-aware medical virtual assistants, remote healthcare support and health education for UK and US clinics, delivered remotely from Abuja."
+  breadcrumbs={[{ name: 'Healthcare', path: '/healthcare' }]}
+  schema={[
+    serviceSchema({
+      name: 'Ozzie Health Consult — remote healthcare support',
+      description: 'Remote healthcare support, medical virtual assistants, health education and health-tech enablement.',
+      path: '/healthcare',
+      serviceType: 'Medical virtual assistant services',
+    }),
+    faqSchema(faqs),
+  ]}
+>
+  <Hero
+    accent="sage"
+    eyebrow="Ozzie Health Consult — Healthcare"
+    title="Remote healthcare support and medical virtual assistants"
+    lead="Ozzie Health Consult gives clinics and practices in the UK and US trained, HIPAA-aware remote support, so your clinical team can spend more time with patients."
+  >
+    <a href={url('/contact')} class="btn-accent">Request a proposal</a>
+    <CalendlyButton class="btn-outline-light">Book a free call</CalendlyButton>
+  </Hero>
+
+  <section class="section" aria-labelledby="hc-services">
+    <div class="container-site">
+      <SectionHeading id="hc-services" eyebrow="What we do" title="Healthcare services" />
+      <div class="grid gap-6 sm:grid-cols-2">
+        {services.map((s) => <ServiceCard {...s} accent="sage" />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-sage-light/60" aria-labelledby="hc-process">
+    <div class="container-site">
+      <SectionHeading
+        id="hc-process"
+        eyebrow="HIPAA-aware process"
+        title="Patient data handled with care"
+        lead="Our team holds HIPAA certification. Every engagement follows the same safeguards."
+      />
+      <ProcessSteps steps={process} />
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="hc-who">
+    <div class="container-site grid gap-10 lg:grid-cols-2">
+      <div>
+        <p class="eyebrow">Who we serve</p>
+        <h2 id="hc-who" class="text-2xl sm:text-3xl">Practices that need reliable remote help</h2>
+        <p class="lead mt-4">We work with healthcare teams who want trained support without the cost of hiring locally.</p>
+      </div>
+      <div class="card p-6 sm:p-8">
+        <CheckList items={audiences} />
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-off-white">
+    <div class="container-site max-w-3xl">
+      <FAQ items={faqs} />
+    </div>
+  </section>
+
+  <CTABand
+    title="Tell us what your practice needs"
+    text="Send a short brief and we will reply with a proposal, or book a free call to talk it through."
+    primaryLabel="Request a proposal"
+  />
+</BaseLayout>

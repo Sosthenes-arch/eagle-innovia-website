@@ -1,0 +1,59 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Hero from '@/components/Hero.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import ServiceCard from '@/components/ServiceCard.astro';
+import ProductGrid from '@/components/ProductGrid.astro';
+import CTABand from '@/components/CTABand.astro';
+import { site } from '@/config/site';
+
+const kinds = [
+  { icon: 'book-open', title: 'Ebooks', text: 'Practical guides on cloud, healthcare and remote work.' },
+  { icon: 'file', title: 'Templates', text: 'Ready-to-use templates that save you hours.' },
+  { icon: 'video', title: 'Courses', text: 'Self-paced courses you can take at your own speed.' },
+  { icon: 'pen', title: 'Workbooks', text: 'Guided workbooks to put what you learn into practice.' },
+];
+---
+
+<BaseLayout
+  title="Digital Products | Ebooks, Templates & Courses"
+  description="Ebooks, templates, courses and workbooks from Eagle Innovia, sold on Selar and Amazon KDP. Practical learning for cloud, healthcare and remote work."
+  breadcrumbs={[
+    { name: 'Shop', path: '/products' },
+    { name: 'Digital Products', path: '/products' },
+  ]}
+>
+  <Hero
+    eyebrow="Digital Products"
+    title="Ebooks, templates and courses for remote careers"
+    lead="Practical digital products from the Eagle Innovia team, available on Selar and Amazon KDP."
+  />
+
+  <section class="section" aria-labelledby="kinds-heading">
+    <div class="container-site">
+      <SectionHeading id="kinds-heading" eyebrow="What we make" title="Learn at your own pace" />
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {kinds.map((k) => <ServiceCard {...k} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-off-white" aria-labelledby="products-heading">
+    <div class="container-site">
+      <SectionHeading id="products-heading" eyebrow="Shop" title="Our digital products" />
+      <ProductGrid
+        line="digital"
+        stores={[
+          { label: 'Shop on Selar', href: site.stores.selar },
+          { label: 'Find us on Amazon', href: site.stores.amazon },
+        ]}
+      />
+    </div>
+  </section>
+
+  <CTABand
+    title="Looking for something specific?"
+    text="Tell us what you want to learn and we will point you to the right product or course."
+    showCalendly={false}
+  />
+</BaseLayout>

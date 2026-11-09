@@ -1,0 +1,32 @@
+---
+interface Step {
+  title: string;
+  text: string;
+}
+interface Props {
+  steps?: Step[];
+}
+const {
+  steps = [
+    { title: 'Discover', text: 'We learn your goals, constraints and what success looks like. No jargon, no hard sell.' },
+    { title: 'Design', text: 'We agree a clear plan, scope and cost before any work starts.' },
+    { title: 'Deliver', text: 'We build, test and hand over in short steps, so you see progress every week.' },
+    { title: 'Support', text: 'We stay on to fix, improve and train your team after go-live.' },
+  ],
+} = Astro.props;
+---
+
+<ol class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+  {
+    steps.map((s, i) => (
+      <li class="card relative p-6">
+        <span class="font-heading text-4xl font-bold text-teal" aria-hidden="true">
+          {String(i + 1).padStart(2, '0')}
+        </span>
+        <h3 class="mt-3 text-xl">{s.title}</h3>
+        <p class="mt-2 text-base text-ink-muted">{s.text}</p>
+        <span class="absolute inset-x-6 bottom-0 h-1 rounded-t bg-lime" aria-hidden="true" />
+      </li>
+    ))
+  }
+</ol>

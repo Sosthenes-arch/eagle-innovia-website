@@ -1,0 +1,39 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Hero from '@/components/Hero.astro';
+import CaseStudyCard from '@/components/CaseStudyCard.astro';
+import CTABand from '@/components/CTABand.astro';
+
+const cases = (await getCollection('case-studies')).sort((a, b) => Number(b.data.featured) - Number(a.data.featured));
+---
+
+<BaseLayout
+  title="Case Studies | Eagle Innovia Ltd, Abuja"
+  description="Projects designed and built by Eagle Innovia, including AfroRemote, a remote-jobs platform for African candidates."
+  breadcrumbs={[{ name: 'Case Studies', path: '/case-studies' }]}
+>
+  <Hero
+    eyebrow="Our work"
+    title="Case studies: real projects built in Abuja"
+    lead="What we built, why, and how it works. We only publish results we can verify."
+  />
+  <section class="section">
+    <div class="container-site space-y-8">
+      {
+        cases.map((c) => (
+          <CaseStudyCard
+            heading="h2"
+            slug={c.id}
+            client={c.data.client}
+            sector={c.data.sector}
+            summary={c.data.summary}
+            siteUrl={c.data.url}
+            features={c.data.features.map((f) => f.title)}
+          />
+        ))
+      }
+    </div>
+  </section>
+  <CTABand title="Have a project in mind?" />
+</BaseLayout>

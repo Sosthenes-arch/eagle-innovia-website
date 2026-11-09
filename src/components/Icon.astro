@@ -1,0 +1,107 @@
+---
+import {
+  ArrowRight,
+  Award,
+  BadgeCheck,
+  BookOpen,
+  Building2,
+  Calendar,
+  Check,
+  ChevronDown,
+  ClipboardList,
+  Cloud,
+  Code,
+  Container,
+  ExternalLink,
+  FileText,
+  Globe,
+  GraduationCap,
+  HandHeart,
+  HeartPulse,
+  Laptop,
+  Leaf,
+  LifeBuoy,
+  Lightbulb,
+  Lock,
+  Mail,
+  MapPin,
+  Menu,
+  MessageCircle,
+  Microscope,
+  PenTool,
+  Play,
+  Rocket,
+  Scale,
+  Search,
+  ServerCog,
+  ShieldCheck,
+  ShoppingBag,
+  Sparkles,
+  Stethoscope,
+  Target,
+  Users,
+  Video,
+  Workflow,
+  X,
+} from '@lucide/astro';
+
+const icons = {
+  'arrow-right': ArrowRight,
+  award: Award,
+  'badge-check': BadgeCheck,
+  'book-open': BookOpen,
+  building: Building2,
+  calendar: Calendar,
+  check: Check,
+  'chevron-down': ChevronDown,
+  clipboard: ClipboardList,
+  cloud: Cloud,
+  code: Code,
+  container: Container,
+  external: ExternalLink,
+  file: FileText,
+  globe: Globe,
+  graduation: GraduationCap,
+  'hand-heart': HandHeart,
+  'heart-pulse': HeartPulse,
+  laptop: Laptop,
+  leaf: Leaf,
+  lifebuoy: LifeBuoy,
+  lightbulb: Lightbulb,
+  lock: Lock,
+  mail: Mail,
+  'map-pin': MapPin,
+  menu: Menu,
+  message: MessageCircle,
+  microscope: Microscope,
+  pen: PenTool,
+  play: Play,
+  rocket: Rocket,
+  scale: Scale,
+  search: Search,
+  server: ServerCog,
+  shield: ShieldCheck,
+  shop: ShoppingBag,
+  sparkles: Sparkles,
+  stethoscope: Stethoscope,
+  target: Target,
+  users: Users,
+  video: Video,
+  workflow: Workflow,
+  x: X,
+} as const;
+
+export type IconName = keyof typeof icons;
+
+interface Props {
+  name: IconName | string;
+  size?: number;
+  class?: string;
+  strokeWidth?: number;
+}
+
+const { name, size = 24, class: className, strokeWidth = 1.75 } = Astro.props;
+const Cmp = icons[name as IconName] ?? Sparkles;
+---
+
+<Cmp size={size} class={className} stroke-width={strokeWidth} aria-hidden="true" />

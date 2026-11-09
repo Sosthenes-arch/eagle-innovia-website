@@ -1,0 +1,46 @@
+---
+import { site } from '@/config/site';
+import { url } from '@/lib/url';
+import Icon from './Icon.astro';
+
+interface Props {
+  heading?: 'h2' | 'h3';
+}
+const { heading = 'h3' } = Astro.props;
+const H = heading;
+const c = site.awsCourse;
+---
+
+<article class="card relative overflow-hidden p-8 sm:p-10">
+  <span class="absolute inset-x-0 top-0 h-1.5 bg-lime" aria-hidden="true"></span>
+  <div class="flex flex-col gap-8 lg:flex-row lg:items-center">
+    <div class="flex-1">
+      <p class="inline-flex items-center gap-2 rounded-full bg-lime px-3 py-1 text-sm font-bold text-midnight">
+        <Icon name="play" size={16} /> Free course
+      </p>
+      <H class="mt-4 text-2xl sm:text-3xl">{c.title}</H>
+      <p class="mt-3 text-ink-muted">
+        A free, project-based AWS course for complete beginners on the Light Cloud YouTube channel. Start
+        with IAM and EC2 and work up to Auto Scaling, load balancing and troubleshooting.
+      </p>
+      <ul class="mt-5 grid gap-2 sm:grid-cols-2">
+        {
+          ['Slide deck for every lesson', 'Hands-on lab', 'GitHub files', 'Written companion article'].map(
+            (i) => (
+              <li class="flex gap-2">
+                <Icon name="check" size={20} class="mt-1 shrink-0 text-teal" />
+                {i}
+              </li>
+            ),
+          )
+        }
+      </ul>
+    </div>
+    <div class="flex flex-col gap-3 lg:w-64">
+      <a href={c.channel} target="_blank" rel="noopener" class="btn-primary">
+        Start the free course<span class="sr-only">(opens YouTube in a new tab)</span>
+      </a>
+      <a href={url('/academy#free-aws-course')} class="btn-outline">See all lessons</a>
+    </div>
+  </div>
+</article>

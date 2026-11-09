@@ -1,0 +1,120 @@
+@import 'tailwindcss';
+
+/* Brand tokens — available as Tailwind utilities (bg-teal, text-midnight …) and CSS variables. */
+@theme {
+  --color-teal: #0b7a75;
+  --color-teal-dark: #085e5a;
+  --color-teal-light: #e3f1f0;
+  --color-lime: #a8d400;
+  --color-lime-light: #f2f9d9;
+  --color-sage: #6baa8e;
+  --color-sage-dark: #356a52;
+  --color-sage-light: #e9f3ee;
+  --color-midnight: #0d1b1e;
+  --color-ink-muted: #45555a;
+  --color-off-white: #f7f9f8;
+  --color-line: #dbe4e1;
+
+  --font-decorative: 'Cinzel Decorative', Georgia, serif;
+  --font-heading: 'Cinzel', Georgia, serif;
+  --font-sans: 'Lato', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  --radius-card: 12px;
+  --shadow-soft: 0 1px 2px rgb(13 27 30 / 0.04), 0 8px 24px rgb(13 27 30 / 0.06);
+  --shadow-lift: 0 2px 4px rgb(13 27 30 / 0.06), 0 16px 40px rgb(13 27 30 / 0.1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-white font-sans text-midnight antialiased;
+    font-size: 1.0625rem;
+    line-height: 1.65;
+  }
+  h1,
+  h2,
+  h3 {
+    @apply font-heading font-semibold text-midnight;
+    line-height: 1.2;
+    text-wrap: balance;
+  }
+  a {
+    @apply text-teal underline-offset-4;
+  }
+  /* Links inside running text are underlined so they don't rely on colour alone. */
+  :where(p, dd, .prose-site li) > a {
+    text-decoration: underline;
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-teal);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  .on-dark :focus-visible {
+    outline-color: var(--color-lime);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@utility container-site {
+  @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+}
+@utility section {
+  @apply py-16 sm:py-20;
+}
+@utility eyebrow {
+  @apply mb-3 text-sm font-bold tracking-[0.14em] text-teal uppercase;
+}
+@utility lead {
+  @apply text-lg text-ink-muted sm:text-xl;
+}
+@utility card {
+  @apply rounded-[12px] border border-line bg-white shadow-[var(--shadow-soft)];
+}
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-[12px] px-5 py-3 text-base font-bold no-underline transition-colors duration-200;
+}
+@utility btn-primary {
+  @apply btn bg-teal text-white hover:bg-lime hover:text-midnight;
+}
+@utility btn-accent {
+  @apply btn bg-lime text-midnight hover:bg-white;
+}
+@utility btn-outline {
+  @apply btn border-2 border-teal text-teal hover:bg-teal hover:text-white;
+}
+@utility btn-outline-light {
+  @apply btn border-2 border-white/70 text-white hover:border-lime hover:bg-lime hover:text-midnight;
+}
+@utility hero-dark {
+  background:
+    radial-gradient(ellipse 80% 70% at 85% 0%, rgb(11 122 117 / 0.55), transparent 60%),
+    radial-gradient(ellipse 60% 60% at 0% 100%, rgb(11 122 117 / 0.25), transparent 60%),
+    var(--color-midnight);
+}
+.prose-site p {
+  @apply mb-4;
+}
+.prose-site h2 {
+  @apply mt-10 mb-3 text-2xl;
+}
+.prose-site h3 {
+  @apply mt-6 mb-2 text-xl;
+}
+.prose-site ul {
+  @apply mb-4 list-disc space-y-1 pl-6;
+}

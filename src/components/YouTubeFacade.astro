@@ -1,0 +1,53 @@
+---
+/**
+ * Lightweight YouTube embed: shows a thumbnail and only loads the (privacy-enhanced)
+ * youtube-nocookie.com iframe after the visitor clicks play.
+ */
+interface Props {
+  id: string;
+  title: string;
+}
+const { id, title } = Astro.props;
+const thumb = `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
+---
+
+<div class="yt-facade relative aspect-video w-full overflow-hidden rounded-[12px] bg-midnight shadow-[var(--shadow-lift)]">
+  <button
+    type="button"
+    class="group absolute inset-0 h-full w-full cursor-pointer"
+    data-yt-id={id}
+    data-yt-title={title}
+    aria-label={`Play video: ${title}`}
+  >
+    <img
+      src={thumb}
+      alt=""
+      width="480"
+      height="360"
+      loading="lazy"
+      decoding="async"
+      class="h-full w-full object-cover opacity-85 transition-opacity group-hover:opacity-100"
+    />
+    <span
+      class="absolute top-1/2 left-1/2 inline-flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-teal text-white shadow-lg transition-colors group-hover:bg-lime group-hover:text-midnight"
+      aria-hidden="true"
+    >
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg>
+    </span>
+  </button>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-yt-id]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const iframe = document.createElement('iframe');
+      iframe.src = `https://www.youtube-nocookie.com/embed/${btn.dataset.ytId}?autoplay=1&rel=0`;
+      iframe.title = btn.dataset.ytTitle || 'YouTube video';
+      iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+      iframe.allowFullscreen = true;
+      iframe.className = 'absolute inset-0 h-full w-full';
+      btn.replaceWith(iframe);
+      iframe.focus();
+    });
+  });
+</script>
